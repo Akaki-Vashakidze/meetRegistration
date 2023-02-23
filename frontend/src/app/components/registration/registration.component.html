@@ -1,0 +1,60 @@
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <mat-form-field class="form-group">
+        <mat-label for="name">სახელი:</mat-label>
+        <input matInput type="text" id="name" formControlName="name" class="form-control">
+        <mat-hint style="color:red;" *ngIf="registerForm.get('name')?.touched  && registerForm.get('name')?.errors?.['required']">
+            სახელის შეყვანა აუცილებელია
+          </mat-hint> 
+    </mat-form-field>
+    <mat-form-field class="form-group">
+        <mat-label for="lastname">გვარი:</mat-label>
+        <input matInput type="text" id="lastname" formControlName="lastname" class="form-control">
+        <mat-hint style="color:red;" *ngIf="registerForm.get('lastname')?.touched  && registerForm.get('lastname')?.errors?.['required']">
+            გვარის შეყვანა აუცილებელია
+          </mat-hint> 
+    </mat-form-field>
+    <mat-form-field class="form-group">
+        <mat-label for="email">მეილი:</mat-label>
+        <input matInput type="text" id="email" formControlName="email" class="form-control">
+        <mat-hint style="color:red;" *ngIf="registerForm.get('email')?.touched  && registerForm.get('email')?.errors?.['required']">
+            მეილის შეყვანა აუცილებელია
+          </mat-hint> 
+    </mat-form-field>
+    <mat-form-field class="form-group">
+        <mat-label for="number">მობ. ნომერი:</mat-label>
+        <input matInput type="text" id="number" formControlName="number" class="form-control">
+        <mat-hint style="color:red;" *ngIf="registerForm.get('number')?.touched  && registerForm.get('number')?.errors?.['required']">
+            ნომრის შეყვანა აუცილებელია
+          </mat-hint> 
+    </mat-form-field>
+    <mat-radio-group formControlName="gender" >
+        <mat-label for="">სქესი:</mat-label>
+        <mat-radio-button value="1">კაცი</mat-radio-button>
+        <mat-radio-button value="2">ქალი</mat-radio-button>
+      </mat-radio-group>
+      <mat-hint style="color:red;" *ngIf="registerForm.get('gender')?.touched  && registerForm.get('gender')?.errors?.['required']">
+        სქესის არჩევა აუცილებელია
+      </mat-hint> 
+      <mat-form-field class="form-group">
+        <mat-label for="password">პაროლი:</mat-label>
+        <input matInput type="password" id="password" formControlName="password" class="form-control">
+        <mat-hint style="color:red;" *ngIf="registerForm.get('password')?.touched  && registerForm.get('password')?.errors?.['required']">
+           პაროლის შეყვანა აუცილებელია
+          </mat-hint> 
+    </mat-form-field>
+    <mat-form-field class="form-group">
+        <mat-label for="password1">გაიმეორეთ პაროლი:</mat-label>
+        <input matInput type="password" id="password1" formControlName="password1" class="form-control">
+        <mat-hint style="color:red;" *ngIf="registerForm.get('password1')?.touched  && registerForm.get('password1')?.errors?.['required']">
+            პაროლის შეყვანა აუცილებელია
+          </mat-hint> 
+    </mat-form-field>
+    <mat-form-field class="form-group">
+      <mat-label for="actCode">აქტივაციის კოდი:</mat-label>
+      <input matInput type="text" id="actCode" formControlName="actCode" class="form-control">
+      <mat-hint style="color:red;" *ngIf="registerForm.get('actCode')?.touched  && registerForm.get('actCode')?.errors?.['required']">
+          აქტივაციის კოდის შეყვანა აუცილებელია
+        </mat-hint> 
+  </mat-form-field>
+    <button type="submit" mat-raised-button style="width:200px">რეგისტრაცია</button>
+</form>

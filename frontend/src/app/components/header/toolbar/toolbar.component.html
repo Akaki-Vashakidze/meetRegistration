@@ -1,0 +1,24 @@
+<p>
+    <mat-toolbar color="primary">
+        <span class="leftMenu">
+            <span>
+                <button routerLink="" mat-icon-button class="pointer">
+                    <mat-icon>menu</mat-icon>
+                </button>
+            </span>
+        </span>
+        <span class="rightMenu">
+            <span *ngIf="user" routerLink="/results" class="login pointer">შედეგები</span>
+            <span *ngIf="user" class="competitions pointer">შეჯიბრზე დარეგისტრირება</span>
+            <span *ngIf="!user" routerLink="/registration" class="register pointer">რეგისტრაცია</span>
+            <span *ngIf="!user" routerLink="/login" class="login pointer">შესვლა</span>
+            <span *ngIf="user" routerLink="/addactcodes" class="logout pointer">აქტივაციის კოდების დამატება</span>
+            <span *ngIf="user" (click)="signOut()" class="logout pointer">გამოსვლა</span>
+            <span (click)="signOut()" *ngIf="user">
+                <button mat-icon-button class="pointer">
+                    <mat-icon>logout</mat-icon>
+                </button>
+            </span>
+        </span>
+    </mat-toolbar>
+</p>

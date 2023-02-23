@@ -1,0 +1,13 @@
+<form [formGroup]="actCodeForm" (ngSubmit)="onSubmit()">
+   
+    <mat-form-field class="form-group">
+        <mat-label for="email">აქტივაციის კოდი:</mat-label>
+        <input matInput type="text" id="actCode" formControlName="actCode" class="form-control">
+        <mat-hint style="color:red;" *ngIf="actCodeForm.get('actCode')?.touched  && actCodeForm.get('actCode')?.errors?.['required']">
+            აქტივაციის კოდის შეყვანა აუცილებელია
+          </mat-hint> 
+    </mat-form-field>
+      
+
+    <button type="submit" mat-raised-button style="width:200px">სისტემაში შესვლა</button>
+</form>
