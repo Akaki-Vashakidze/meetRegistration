@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
            localStorage.setItem('token',res.token)
            localStorage.setItem('user',res.user.name + ' ' + res.user.lastname)
            this._authService.SignedIn.next(true)
-           this.router.navigate([''])
+           this.router.navigate(['/results'])
           },
           err => { console.log(err) }
         )

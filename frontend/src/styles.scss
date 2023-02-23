@@ -6,3 +6,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .pointer {
     cursor: pointer;
 }
+
+.active {
+    color: rgb(255, 0, 0);
+}
+
+.hide {
+    display: none;
+}

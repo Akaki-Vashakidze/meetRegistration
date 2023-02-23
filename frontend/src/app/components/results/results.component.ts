@@ -13,23 +13,21 @@ import { AuthService } from 'src/app/services/auth.service';
   templateUrl: './results.component.html',
   styleUrls: ['./results.component.scss']
 })
-export class ResultsComponent implements OnInit, OnDestroy {
+export class ResultsComponent implements OnInit{
   results: any = [];
   dataSource: any;
   columns: string[] = ['name', 'date', 'course', 'results'];
-  private resultsSub: Subscription;
-
+  loading: boolean = false;
   @ViewChild(MatSort) sort: MatSort | any;
   @ViewChild(MatPaginator) paginator: MatPaginator | any;
-  constructor(private _resultsService: ResultsService, private _router:Router,private _authService:AuthService) { }
-  ngOnDestroy(): void {
-    this.resultsSub.unsubscribe()
-  }
+  constructor(private _resultsService: ResultsService, private _router: Router, private _authService: AuthService) { }
 
   ngOnInit(): void {
-    this.resultsSub = this._resultsService.getResults()
+    this.loading = true;
+     this._resultsService.getResults()
       .subscribe(
         res => {
+          this.loading = false;
           this.results = res;
           console.log(this.results)
           this.dataSource = new MatTableDataSource(this.results);
@@ -37,9 +35,13 @@ export class ResultsComponent implements OnInit, OnDestroy {
           this.dataSource.paginator = this.paginator;
         },
         err => {
-              this._router.navigate(['/login'])
-              this._authService.SignedIn.next(false)
-         }
+          this._router.navigate(['/login'])
+          this._authService.SignedIn.next(false)
+        }
       )
+  }
+
+  seeResults(item:any){
+    this._router.navigate(['/meetResults',item.nameYear])
   }
 }

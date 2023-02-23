@@ -44,7 +44,8 @@ const materiaComponents: any[] | Type<any> | ModuleWithProviders<{}> = [
   MatButtonModule,
   MatRadioModule,
   MatTableModule,
-  MatPaginatorModule
+  MatPaginatorModule,
+  MatProgressSpinnerModule
 ]
 
 @NgModule({

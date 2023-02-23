@@ -14,6 +14,8 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ResultsComponent } from './components/results/results.component';
 import { TokenInterceptorService } from './services/token-interceptor.service';
 import { AddActCodesComponent } from './components/add-act-codes/add-act-codes.component';
+import { MeetResultsComponent } from './components/meet-results/meet-results.component';
+import { MeetEventResultsComponent } from './components/meet-event-results/meet-event-results.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import { AddActCodesComponent } from './components/add-act-codes/add-act-codes.c
     LoginComponent,
     HomeComponent,
     ResultsComponent,
-    AddActCodesComponent
+    AddActCodesComponent,
+    MeetResultsComponent,
+    MeetEventResultsComponent
   ],
   imports: [
     BrowserModule,

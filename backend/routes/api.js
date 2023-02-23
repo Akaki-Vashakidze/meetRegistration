@@ -35,6 +35,42 @@ router.post('/actcodes', async (req, res) => {
     }
 })
 
+router.post('/meetResults',async(req,res)=> {
+    try {
+        let foundMeet;
+         await Results.find().then((results) => {
+            foundMeet =  results.find((item)=>{
+                return item.nameYear == req.body.meetName
+            })
+        })
+        res.send(foundMeet)
+    }
+    catch (error) {
+        res.status(500).send("something went wrong")
+    }
+})
+
+router.post('/eventResults',async(req,res)=> {
+    try {
+        let foundMeet;
+        let foundEvent;
+         await Results.find().then((results) => {
+            foundMeet =  results.find((item)=>{
+                return item.nameYear == req.body.meetName
+            })
+        })
+        console.log(foundMeet + '11111')
+        foundEvent = await foundMeet.meetInfo.find((item)=>{
+         return item.event == req.body.eventName && item.gender == req.body.gender
+        })
+        res.send(foundEvent)
+    }
+    catch (error) {
+        res.status(500).send("something went wrong")
+    }
+})
+
+
 
 router.post('/register', async (req, res) => {
     try {
@@ -49,10 +85,8 @@ router.post('/register', async (req, res) => {
                 userData.password = hash;
             })
             .catch(err => console.error(err.message))
-        console.log(userData.actCode)
         //აქტივაციის კოდის შემოწმება
         const code = await ActCode.findOne({ actCode: userData.actCode });
-        console.log(code)
         // აქტივაციის კოდის შემოწმება (გამოყენებულია თუ არა)
         if (code) {
             if (code.used) {

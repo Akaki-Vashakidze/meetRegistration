@@ -1,35 +1,28 @@
-
 <mat-spinner *ngIf="loading;"></mat-spinner>
 
 <div class="table" [ngClass]="loading? 'hide':''">
     <table mat-table [dataSource]="dataSource" matSort>
     
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">
-          შეჯიბრის დასახელება
-        </th>
-        <td mat-cell *matCellDef="let info"> {{info.meetName}} </td>
-      </ng-container>
     
-      <ng-container matColumnDef="date">
+      <ng-container matColumnDef="event">
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">
-          თარიღი
+          ივენთი
         </th>
-        <td mat-cell *matCellDef="let info"> {{info.date}} </td>
+        <td mat-cell *matCellDef="let info"> {{info.event}} </td>
       </ng-container>
     
-      <ng-container matColumnDef="course">
+      <ng-container matColumnDef="gender">
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by weight">
-          აუზის სიგრძე
+         სქესი
         </th>
-        <td mat-cell *matCellDef="let info"> {{info.course}} </td>
+        <td mat-cell *matCellDef="let info"> {{info.gender}} </td>
       </ng-container>
     
       <ng-container matColumnDef="results">
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by symbol">
           შედეგები
         </th>
-        <td mat-cell *matCellDef="let info"><a (click)="seeResults(info)" >შედეგები</a></td>
+        <td mat-cell *matCellDef="let info"><a (click)="seeEvents(info)" >შედეგები</a></td>
       </ng-container>
     
       <tr mat-header-row *matHeaderRowDef="columns"></tr>
@@ -38,5 +31,3 @@
     </table>
     <mat-paginator [pageSizeOptions]="[5,10,20]" showFirstLastButtons=""></mat-paginator>
     </div>
-
-    
