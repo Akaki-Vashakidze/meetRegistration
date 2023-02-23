@@ -2,6 +2,7 @@
 <mat-spinner *ngIf="loading;"></mat-spinner>
 
 <div class="table" [ngClass]="loading? 'hide':''">
+  <h1>შეჯიბრები</h1>
     <table mat-table [dataSource]="dataSource" matSort>
     
       <ng-container matColumnDef="name">

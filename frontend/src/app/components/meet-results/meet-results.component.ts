@@ -20,6 +20,7 @@ export class MeetResultsComponent implements OnInit{
   @ViewChild(MatPaginator) paginator: MatPaginator | any;
 constructor(private route:ActivatedRoute,private _router:Router, private _authService:AuthService ,private _resultsService:ResultsService){}
 meet:string;
+name:string;
 ngOnInit(): void {
   this.loading = true;
  this.meet = this.route.snapshot.params['meet']
@@ -27,6 +28,7 @@ ngOnInit(): void {
  .subscribe(
    res => {
     console.log(res)
+    this.name = res.meetName + res.date.split('.')[1]
     this.loading = false;
      this.results = res;
      this.dataSource = new MatTableDataSource(this.results.meetInfo);

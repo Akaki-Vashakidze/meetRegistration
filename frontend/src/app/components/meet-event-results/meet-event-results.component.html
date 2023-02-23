@@ -1,6 +1,7 @@
 <mat-spinner *ngIf="loading;"></mat-spinner>
 
 <div class="table" [ngClass]="loading? 'hide':''">
+    <h1>{{header}}</h1>
     <table mat-table [dataSource]="dataSource" matSort>
     
         <ng-container matColumnDef="number">

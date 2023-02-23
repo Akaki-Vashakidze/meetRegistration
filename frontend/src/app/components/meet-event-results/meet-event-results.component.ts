@@ -16,7 +16,7 @@ export class MeetEventResultsComponent implements OnInit{
   dataSource: any;
   columns: string[] = ['number','name','age', 'result', 'points'];
   loading: boolean = false;
-
+header:string;
   @ViewChild(MatSort) sort: MatSort | any;
   @ViewChild(MatPaginator) paginator: MatPaginator | any;
 constructor(private route:ActivatedRoute,private _router:Router, private _authService:AuthService ,private _resultsService:ResultsService){}
@@ -34,6 +34,7 @@ ngOnInit(): void {
    res => {
     console.log(res)
     this.loading = false;
+    this.header = res.event + ' ' + res.gender;
     this.results = res;
      this.dataSource = new MatTableDataSource(this.results.results);
      this.dataSource.sort = this.sort;

@@ -59,7 +59,7 @@ router.post('/eventResults',async(req,res)=> {
                 return item.nameYear == req.body.meetName
             })
         })
-        console.log(foundMeet + '11111')
+        
         foundEvent = await foundMeet.meetInfo.find((item)=>{
          return item.event == req.body.eventName && item.gender == req.body.gender
         })
