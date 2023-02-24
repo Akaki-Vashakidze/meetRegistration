@@ -1,0 +1,68 @@
+<form [formGroup]="swimmerRegistrationForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="fill">
+        <mat-label>დისტანცია</mat-label>
+        <mat-select formControlName="distance">
+            <mat-option *ngFor="let item of distances" [value]="item.value">
+                {{item.value}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>სტილი</mat-label>
+        <mat-select formControlName="style">
+            <mat-option *ngFor="let item of styles" [value]="item.value">
+                {{item.value}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field class="form-group">
+        <mat-label for="lastname">გვარი:</mat-label>
+        <input matInput type="text" id="lastname" formControlName="lastname" class="form-control">
+        <mat-hint style="color:red;"
+            *ngIf="swimmerRegistrationForm.get('lastname')?.touched  && swimmerRegistrationForm.get('lastname')?.errors?.['required']">
+            გვარის შეყვანა აუცილებელია
+        </mat-hint>
+    </mat-form-field>
+    <mat-form-field class="form-group">
+        <mat-label for="name">სახელი:</mat-label>
+        <input matInput type="name" id="name" formControlName="name" class="form-control">
+        <mat-hint style="color:red;"
+            *ngIf="swimmerRegistrationForm.get('name')?.touched  && swimmerRegistrationForm.get('name')?.errors?.['required']">
+            სახელის შეყვანა აუცილებელია
+        </mat-hint>
+    </mat-form-field>
+<mat-form-field class="form-group">
+  <mat-label for="age">დაბ.წელი:</mat-label>
+  <input matInput type="age" id="age" formControlName="age" class="form-control">
+  <mat-hint style="color:red;" *ngIf="swimmerRegistrationForm.get('age')?.touched  && swimmerRegistrationForm.get('age')?.errors?.['required']">
+     დაბ.წელი შეყვანა აუცილებელია
+    </mat-hint> 
+</mat-form-field>
+
+<mat-radio-group formControlName="gender" >
+    <mat-label for="">სქესი:</mat-label>
+    <mat-radio-button value="male">კაცი</mat-radio-button>
+    <mat-radio-button value="female">ქალი</mat-radio-button>
+  </mat-radio-group>
+  <mat-hint style="color:red;" *ngIf="swimmerRegistrationForm.get('gender')?.touched  && swimmerRegistrationForm.get('gender')?.errors?.['required']">
+    სქესის არჩევა აუცილებელია
+  </mat-hint> 
+
+<mat-form-field class="form-group">
+    <mat-label for="result">შედეგი:</mat-label>
+    <input matInput type="result" id="result" formControlName="result" class="form-control">
+    <mat-hint style="color:red;" *ngIf="swimmerRegistrationForm.get('result')?.touched  && swimmerRegistrationForm.get('result')?.errors?.['required']">
+       შედეგი შეყვანა აუცილებელია
+      </mat-hint> 
+  </mat-form-field>
+
+  <mat-form-field class="form-group">
+    <mat-label for="competition">შეჯიბრი:</mat-label>
+    <input matInput type="competition" id="competition" formControlName="competition" class="form-control">
+  </mat-form-field>
+
+  <mat-form-field class="form-group">
+    <mat-label for="date">თარიღი:</mat-label>
+    <input matInput type="date" id="date" formControlName="date" class="form-control">
+  </mat-form-field>
+</form>

@@ -21,4 +21,14 @@ export class ResultsService {
   getEventResults (meetName:any,eventName:any,gender:any) {
   return this._http.post<any>(environment.eventResultsURL,{meetName,eventName,gender})
   }
+
+  openSidenav() {
+    this.openedSidenav.next(true)
+  }
+
+  getSwimmerCardInfo(cardInfo:any) {
+    return this._http.post<any>(environment.swimmerCardInfoURL,cardInfo)
+  }
+
+  openedSidenav = new BehaviorSubject<any>(false)
 }

@@ -16,6 +16,8 @@ import { TokenInterceptorService } from './services/token-interceptor.service';
 import { AddActCodesComponent } from './components/add-act-codes/add-act-codes.component';
 import { MeetResultsComponent } from './components/meet-results/meet-results.component';
 import { MeetEventResultsComponent } from './components/meet-event-results/meet-event-results.component';
+import { SwimmerRegisterComponent } from './components/swimmer-register/swimmer-register.component';
+import { SwimmerCardComponent } from './components/swimmer-card/swimmer-card.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import { MeetEventResultsComponent } from './components/meet-event-results/meet-
     ResultsComponent,
     AddActCodesComponent,
     MeetResultsComponent,
-    MeetEventResultsComponent
+    MeetEventResultsComponent,
+    SwimmerRegisterComponent,
+    SwimmerCardComponent
   ],
   imports: [
     BrowserModule,

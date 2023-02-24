@@ -7,14 +7,16 @@ import { MeetEventResultsComponent } from './components/meet-event-results/meet-
 import { MeetResultsComponent } from './components/meet-results/meet-results.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { ResultsComponent } from './components/results/results.component';
+import { SwimmerRegisterComponent } from './components/swimmer-register/swimmer-register.component';
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   {path:'registration',component:RegistrationComponent},
   {path:'login',component:LoginComponent},
+  {path:'swimmerRegistraton',component:SwimmerRegisterComponent},
   // {path:'addactcodes',component:AddActCodesComponent},
-  {path:'meetResults/:meet',component:MeetResultsComponent},
-  {path:'meetEventResults/:event/:meet/:gender',component:MeetEventResultsComponent},
+  {path:'meetResults/:meet',component:MeetResultsComponent,canActivate:[AuthGuard]},
+  {path:'meetEventResults/:event/:meet/:gender',component:MeetEventResultsComponent,canActivate:[AuthGuard]},
   {path:'results',component:ResultsComponent,canActivate:[AuthGuard]},
   {path:'',component:HomeComponent},
 ];

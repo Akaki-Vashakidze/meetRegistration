@@ -1,0 +1,20 @@
+form {
+    display: flex;
+    position: relative;
+}
+
+mat-form-field {
+    width: 300px;
+}
+
+form {
+    border: 2px solid black;
+    max-width: 1200px;
+    border-radius: 8px;
+    margin: 0 auto;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    margin: 20px;
+    padding: 10px;
+}

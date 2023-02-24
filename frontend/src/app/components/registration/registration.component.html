@@ -29,8 +29,8 @@
     </mat-form-field>
     <mat-radio-group formControlName="gender" >
         <mat-label for="">სქესი:</mat-label>
-        <mat-radio-button value="1">კაცი</mat-radio-button>
-        <mat-radio-button value="2">ქალი</mat-radio-button>
+        <mat-radio-button value="male">კაცი</mat-radio-button>
+        <mat-radio-button value="female">ქალი</mat-radio-button>
       </mat-radio-group>
       <mat-hint style="color:red;" *ngIf="registerForm.get('gender')?.touched  && registerForm.get('gender')?.errors?.['required']">
         სქესის არჩევა აუცილებელია
