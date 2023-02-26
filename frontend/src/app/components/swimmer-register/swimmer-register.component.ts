@@ -12,11 +12,10 @@ import { ResultsService } from 'src/app/services/results.service';
 })
 export class SwimmerRegisterComponent implements OnDestroy, OnInit {
   swimmerRegistrationForm: FormGroup;
-
+  lastnameSearch: any = '';
   distances: any[] = [
     { value: '50' }, { value: '100' }, { value: '200' }, { value: '400' }, { value: '800' }, { value: '1500' }
   ]
-
   styles: any[] = [
     { value: 'ბატერფლაი' }, { value: 'გულაღმა ცურვა' }, { value: 'ბრასი' }, { value: 'თავისუფალი ყაიდა' }, { value: 'კომპლექსი' }
   ]
@@ -29,7 +28,12 @@ export class SwimmerRegisterComponent implements OnDestroy, OnInit {
   newCardSwimmerInfo: object;
   allResults: any;
   allSwimmersNames: string[] = [];
-  filteredNames:Observable<any>;
+  names: string[];
+  changeValueSubscription: Subscription;
+  swimmer = {
+    name: '',
+    lastname: ''
+  }
   ngOnInit(): void {
     this.sidenavSubscribe = this._resultsService.openedSidenav.subscribe((item) => {
       this.opened = item;
@@ -40,7 +44,13 @@ export class SwimmerRegisterComponent implements OnDestroy, OnInit {
       'name': new FormControl(null, Validators.required),
       'distance': new FormControl(null, Validators.required),
       'style': new FormControl(null, Validators.required),
+    })
 
+    // autecomplete შენით გააკეთე, ყოჩაღ! ვამაყობ :D
+    this.changeValueSubscription = this.swimmerRegistrationForm.valueChanges.subscribe(val => {
+      this.names = this.allSwimmersNames.filter(item => {
+        return item.includes(val.lastname)
+      })
     })
 
     this._resultsService.getResults()
@@ -58,37 +68,32 @@ export class SwimmerRegisterComponent implements OnDestroy, OnInit {
               }
             }
           })
-           this.allSwimmersNames = [...new Set(names)]
+          this.allSwimmersNames = [...new Set(names)]
           console.log(this.allSwimmersNames)
         },
         err => {
           console.log(err)
         }
       )
-
-   this.filteredNames = this.swimmerRegistrationForm.valueChanges.pipe(
-    startWith(''),
-    map((value) => {
-      if(value.lastname) {
-        this._filter(value.lastname)
-      }
-      
-    })
-   )
   }
 
-  private _filter(value:any):string[]{
-    
-    const filterValue = value.toLowerCase()
-    console.log(filterValue)
-    let array1 = this.allSwimmersNames.filter(option => option.toLowerCase().includes(filterValue))
-    console.log(array1)
-    return array1
-    //ეს სწორად ხდება. აქ გაჩერდი
+  clickedOutside() {
+    if (this.swimmerRegistrationForm.value.lastname ) {
+      if( this.swimmerRegistrationForm.value.lastname.split(' ')[1]) {
+      this.swimmer.name = this.swimmerRegistrationForm.value.lastname.split(' ')[1]
+      this.swimmer.lastname = this.swimmerRegistrationForm.value.lastname.split(' ')[0]
+      this.swimmerRegistrationForm.patchValue({
+        'lastname': this.swimmer.lastname,
+        'name': this.swimmer.name
+      })
+    }
   }
+  }
+
 
   ngOnDestroy(): void {
     this.sidenavSubscribe.unsubscribe()
+    this.changeValueSubscription.unsubscribe()
   }
 
   onSubmit() {

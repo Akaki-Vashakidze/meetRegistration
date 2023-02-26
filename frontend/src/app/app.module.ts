@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -18,6 +18,7 @@ import { MeetResultsComponent } from './components/meet-results/meet-results.com
 import { MeetEventResultsComponent } from './components/meet-event-results/meet-event-results.component';
 import { SwimmerRegisterComponent } from './components/swimmer-register/swimmer-register.component';
 import { SwimmerCardComponent } from './components/swimmer-card/swimmer-card.component';
+import { ClickedOutsideDirective } from './directives/clicked-outside.directive';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { SwimmerCardComponent } from './components/swimmer-card/swimmer-card.com
     MeetResultsComponent,
     MeetEventResultsComponent,
     SwimmerRegisterComponent,
-    SwimmerCardComponent
+    SwimmerCardComponent,
+    ClickedOutsideDirective
   ],
   imports: [
     BrowserModule,
@@ -39,7 +41,8 @@ import { SwimmerCardComponent } from './components/swimmer-card/swimmer-card.com
     BrowserAnimationsModule,
     MaterialModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [{
     provide:HTTP_INTERCEPTORS,
