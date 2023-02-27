@@ -1,7 +1,7 @@
 <p>
     <mat-toolbar color="primary">
         <span class="leftMenu">
-            <span *ngIf="!user" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"  routerLink="/" class="login pointer">მთავარი</span>
+            <span *ngIf="user" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"  routerLink="/" class="login pointer">მთავარი</span>
         </span>
         <span class="rightMenu">
             <span *ngIf="user" routerLinkActive="active" routerLink="/results" class="login pointer">შედეგები</span>

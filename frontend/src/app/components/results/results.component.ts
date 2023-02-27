@@ -29,7 +29,6 @@ export class ResultsComponent implements OnInit{
         res => {
           this.loading = false;
           this.results = res;
-          console.log(this.results)
           this.dataSource = new MatTableDataSource(this.results);
           this.dataSource.sort = this.sort;
           this.dataSource.paginator = this.paginator;

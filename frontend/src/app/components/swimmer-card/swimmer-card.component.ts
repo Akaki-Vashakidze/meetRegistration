@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { ResultsService } from 'src/app/services/results.service';
 
 @Component({
   selector: 'app-swimmer-card',
@@ -27,10 +28,9 @@ export class SwimmerCardComponent {
     {value:'ბატერფლაი'}, {value:'გულაღმა ცურვა'}, {value:'ბრასი'}, {value:'თავისუფალი ყაიდა'}, {value:'კომპლექსი'}
   ]
 
-  constructor(private _authService: AuthService,private router:Router) { }
+  constructor(private _authService: AuthService,private router:Router,private _resultsService:ResultsService) { }
 
   ngOnInit(): void {
-    console.log(this.name,this.lastname)
     this.swimmerRegistrationForm = new FormGroup({
       'age': new FormControl(null, Validators.required),
       'result': new FormControl(null, Validators.required),
@@ -49,7 +49,7 @@ export class SwimmerCardComponent {
       'result': this.result,
       'gender': selectGender,
       'lastname': this.lastname,
-      'name': this.name.split(' ')[1],
+      'name': this.name,
       'distance': this.distance,
       'style': this.style,
     })
@@ -62,6 +62,10 @@ export class SwimmerCardComponent {
       })
     }
    
+  }
+
+  deleteCard(){
+    this._resultsService.deleteCards.next(this.swimmerRegistrationForm.value)
   }
 
   onSubmit() {

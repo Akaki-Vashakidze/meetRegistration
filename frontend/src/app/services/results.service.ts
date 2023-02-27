@@ -8,11 +8,14 @@ import { environment } from 'src/environments/environment.development';
 })
 export class ResultsService {
 
+  deleteCards = new BehaviorSubject<any>({})
+
   constructor(private _http:HttpClient) { }
 
   getResults(){
     return this._http.get<any>(environment.resultsURL)
   }
+
 
   getNames(){
     return this._http.get<any>(environment.namesURL)
@@ -31,7 +34,6 @@ export class ResultsService {
   }
 
   getSwimmerCardInfo(cardInfo:any) {
-    console.log(cardInfo)
     return this._http.post<any>(environment.swimmerCardInfoURL,cardInfo)
   }
 

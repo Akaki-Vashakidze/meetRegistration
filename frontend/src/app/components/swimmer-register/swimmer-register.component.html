@@ -1,58 +1,67 @@
 <mat-sidenav-container>
     <mat-sidenav #sidenav mode="side" [(opened)]="opened">
-        <form [formGroup]="swimmerRegistrationForm" (ngSubmit)="onSubmit()">
-            <mat-form-field appearance="fill">
-                <mat-label>დისტანცია</mat-label>
-                <mat-select formControlName="distance">
-                    <mat-option *ngFor="let item of distances" [value]="item.value">
-                        {{item.value}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-                <mat-label>სტილი</mat-label>
-                <mat-select formControlName="style">
-                    <mat-option *ngFor="let item of styles" [value]="item.value">
-                        {{item.value}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
+        <div>
+            <form [formGroup]="swimmerRegistrationForm" (ngSubmit)="onSubmit()">
+                <mat-form-field appearance="fill">
+                    <mat-label>დისტანცია</mat-label>
+                    <mat-select formControlName="distance">
+                        <mat-option *ngFor="let item of distances" [value]="item.value">
+                            {{item.value}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>სტილი</mat-label>
+                    <mat-select formControlName="style">
+                        <mat-option *ngFor="let item of styles" [value]="item.value">
+                            {{item.value}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
 
-            <mat-form-field class="form-group">
-                <mat-label for="lastname">გვარი:</mat-label>
+                <mat-form-field class="form-group">
+                    <mat-label for="lastname">გვარი:</mat-label>
 
-                <input appClickedOutside (clickedOutside)="clickedOutside()" matInput type="text" [matAutocomplete]="auto" id="lastname" formControlName="lastname" class="form-control">
+                    <input appClickedOutside (clickedOutside)="clickedOutside()" matInput type="text"
+                        [matAutocomplete]="auto" id="lastname" formControlName="lastname" class="form-control">
 
-                <mat-autocomplete  #auto="matAutocomplete">
-                    <mat-option (click)="fun" *ngFor="let name of names" [value]="name">
-                        {{name}}
-                    </mat-option>
-                </mat-autocomplete>
+                    <mat-autocomplete #auto="matAutocomplete">
+                        <mat-option (click)="fun" *ngFor="let name of names" [value]="name">
+                            {{name}}
+                        </mat-option>
+                    </mat-autocomplete>
 
-                <mat-hint style="color:red;"
-                    *ngIf="swimmerRegistrationForm.get('lastname')?.touched  && swimmerRegistrationForm.get('lastname')?.errors?.['required']">
-                    გვარის შეყვანა აუცილებელია
-                </mat-hint>
-            </mat-form-field>
+                    <mat-hint style="color:red;"
+                        *ngIf="swimmerRegistrationForm.get('lastname')?.touched  && swimmerRegistrationForm.get('lastname')?.errors?.['required']">
+                        გვარის შეყვანა აუცილებელია
+                    </mat-hint>
+                </mat-form-field>
 
-            <mat-form-field class="form-group">
-                <mat-label for="name">სახელი:</mat-label>
-                <input matInput type="name" id="name" formControlName="name" class="form-control">
-                <mat-hint style="color:red;"
-                    *ngIf="swimmerRegistrationForm.get('name')?.touched  && swimmerRegistrationForm.get('name')?.errors?.['required']">
-                    სახელის შეყვანა აუცილებელია
-                </mat-hint>
-            </mat-form-field>
-            <button class="button" type="submit" mat-raised-button style="width:200px">დამატება</button>
+                <mat-form-field class="form-group">
+                    <mat-label for="name">სახელი:</mat-label>
+                    <input matInput type="name" id="name" formControlName="name" class="form-control">
+                    <mat-hint style="color:red;"
+                        *ngIf="swimmerRegistrationForm.get('name')?.touched  && swimmerRegistrationForm.get('name')?.errors?.['required']">
+                        სახელის შეყვანა აუცილებელია
+                    </mat-hint>
+                </mat-form-field>
+                <button class="button" type="submit" mat-raised-button style="width:200px">დამატება</button>
 
-        <button mat-raised-button style="width:200px" type="button" (click)="sidenav.close()">დახურვა</button>
-        </form>
+                <button mat-raised-button style="width:200px" type="button" (click)="sidenav.close()">დახურვა</button>
+            </form>
+        </div>
+        <div class="shorterCards">
+            <h3>შემოკლებული სია:</h3>
+            <div class="swimmersShortenCardInfo" *ngFor="let shorterCard of Cards; let i = index"><span>{{i + 1 + ') '}}</span><span>{{shorterCard.lastname + ' ' + shorterCard.name + ' '}}</span><span>{{shorterCard.distance}}</span><span>{{shortenName(shorterCard.style)}}</span></div>
+        </div>
     </mat-sidenav>
     <mat-sidenav-content>
-     
+
         <button mat-raised-button (click)="sidenav.toggle()">{{opened?'X':'დამატება'}}</button>
         <div class="cards">
-            <app-swimmer-card [style]="card.style" [distance]="card.distance" [gender]="card.gender" [result]="card.result" [age]="card.age" [club]="card.club" [lastname]="card.lastname" [name]="card.name" *ngFor="let card of Cards"></app-swimmer-card>
+            <app-swimmer-card [style]="card.style" [distance]="card.distance" [gender]="card.gender"
+                [result]="card.result" [age]="card.age" [club]="card.club" [lastname]="card.lastname" [name]="card.name"
+                *ngFor="let card of Cards"></app-swimmer-card>
             <mat-spinner *ngIf="loading;"></mat-spinner>
         </div>
     </mat-sidenav-content>

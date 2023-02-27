@@ -27,7 +27,6 @@ ngOnInit(): void {
  this._resultsService.getMeetResults(this.meet)
  .subscribe(
    res => {
-    console.log(res)
     this.name = res.meetName + res.date.split('.')[1]
     this.loading = false;
      this.results = res;

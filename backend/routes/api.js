@@ -260,8 +260,35 @@ router.get('/results', verifyToken, async (req, res) => {
 
 router.get('/names', verifyToken, async (req, res) => {
     try {
-        Results.find({},{meetInfo:1}).then((result) => {
-            res.json(result)
+        Results.find({},{meetInfo:1})
+        .then((item) => {
+            let allResults=[]
+            item.map(item => {
+                for(let i = 0;i<item.meetInfo.length;i++){
+                    allResults.push(item.meetInfo[i]) 
+                }
+            })
+            return allResults
+        })
+        .then(item => {
+            let allNameArr = [];
+            for(let i = 0;i<item.length;i++) {
+                if(item[i].results) {
+                    for(let j = 0; j<item[i].results.length;j++) {
+                    allNameArr.push(item[i].results[j])
+                }
+                }
+            }
+            return allNameArr;
+        })
+        .then(item => {
+               let names = item.map(item => {
+                    return item.name
+                })
+                return names;
+        })
+        .then(item=>{
+            res.send(item)
         })
     }
     catch (error) {

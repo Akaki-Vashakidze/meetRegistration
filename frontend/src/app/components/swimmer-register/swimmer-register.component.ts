@@ -13,8 +13,8 @@ import { ResultsService } from 'src/app/services/results.service';
 export class SwimmerRegisterComponent implements OnDestroy, OnInit {
   swimmerRegistrationForm: FormGroup;
   lastnameSearch: any = '';
-  info:any;
-  loading :boolean = false;
+  info: any;
+  loading: boolean = false;
   distances: any[] = [
     { value: '50' }, { value: '100' }, { value: '200' }, { value: '400' }, { value: '800' }, { value: '1500' }
   ]
@@ -22,21 +22,52 @@ export class SwimmerRegisterComponent implements OnDestroy, OnInit {
     { value: 'ბატერფლაი' }, { value: 'გულაღმა ცურვა' }, { value: 'ბრასი' }, { value: 'თავისუფალი ყაიდა' }, { value: 'კომპლექსი' }
   ]
   sidenavSubscribe: Subscription;
-  Cards: object[] = [
-   
+  Cards: any = [
+
   ]
   constructor(private _authService: AuthService, private _resultsService: ResultsService, private router: Router) { }
   opened: boolean;
   newCardSwimmerInfo: object;
   allResults: any;
-  allSwimmersNames: string[] = [];
+  allSwimmersNames: any = [];
   names: string[];
   changeValueSubscription: Subscription;
+  deleteCardSubscription: Subscription;
   swimmer = {
     name: '',
     lastname: ''
   }
+
+
+  shortenName(style){
+      if(style == 'თავისუფალი ყაიდა') {
+        return ' თ/ყ'
+      }if(style == 'გულაღმა ცურვა') {
+        return ' გ/ც'
+      }if(style == 'კომპლექსი') {
+        return ' კომპ.'
+      }if(style == 'ბატერფლაი') {
+        return ' ბატ.'
+      }if(style == 'ბრასი') {
+        return ' ბრასი'
+      }
+      return ''
+  }
+
   ngOnInit(): void {
+
+
+    this.deleteCardSubscription = this._resultsService.deleteCards.subscribe(item => {
+      for (let i = 0; i < this.Cards.length; i++) {
+        if (this.Cards[i].name == item.name && this.Cards[i].lastname == item.lastname && this.Cards[i].age == item.age && this.Cards[i].distance == item.distance && this.Cards[i].style == item.style) {
+          this.Cards.splice(i, 1)
+        }
+      }
+
+
+
+    })
+
     this.sidenavSubscribe = this._resultsService.openedSidenav.subscribe((item) => {
       this.opened = item;
     })
@@ -48,7 +79,6 @@ export class SwimmerRegisterComponent implements OnDestroy, OnInit {
       'style': new FormControl(null, Validators.required),
     })
 
-    // autecomplete შენით გააკეთე, ყოჩაღ! ვამაყობ :D
     this.changeValueSubscription = this.swimmerRegistrationForm.valueChanges.subscribe(val => {
       this.names = this.allSwimmersNames.filter(item => {
         return item.includes(val.lastname)
@@ -57,20 +87,8 @@ export class SwimmerRegisterComponent implements OnDestroy, OnInit {
 
     this._resultsService.getNames()
       .subscribe(
-        res => {
-          console.log(res)
-          this.allResults = res;
-          let names = []
-          // ეს საშინელებაა და  გასაკეთებელიი გააქვსსსსსსსსსსსს
-          this.allResults.map(item => {
-            for (let i = 0; i < item.meetInfo.length; i++) {
-              if (item.meetInfo[i].results) {
-                for (let j = 0; j < item.meetInfo[i].results.length; j++) {
-                  names.push(item.meetInfo[i].results[j].name)
-                }
-              }
-            }
-          })
+       async res => {
+          let names = await res;
           this.allSwimmersNames = [...new Set(names)]
         },
         err => {
@@ -92,33 +110,38 @@ export class SwimmerRegisterComponent implements OnDestroy, OnInit {
     }
   }
 
-
   ngOnDestroy(): void {
     this.sidenavSubscribe.unsubscribe()
     this.changeValueSubscription.unsubscribe()
+    this.deleteCardSubscription.unsubscribe()
   }
 
   onSubmit() {
     if (this.swimmerRegistrationForm.status == 'INVALID') {
       alert('გთხოვთ შეავსოთ ყველა საჭირო გრაფა')
     } else {
-       this.loading = true;
-       this.info = { ...this.swimmerRegistrationForm.value, poolSize: '50მ' }
-      //აქ ტყუილად ვაგზავნი ინფოს მაგრამ ჯერ იყოს მაინც, იმიტომ რომ მერე უნდა გადავაკეთო ბექში და იქვე მოვძებნო ის შედეგები რაც მჭირდება.
-      this._resultsService.getSwimmerCardInfo(this.info)
-        .subscribe(
-          async res => {
-            this.loading = false;
-            let newCardInfo = {...this.info,...res}
-            this.Cards.push(newCardInfo)
-            console.log(newCardInfo)
-          },
-          err => {
-            this.loading = false;
-            let newCardInfo = {...this.info}
-            this.Cards.push(newCardInfo)
-          })
+      let FormValue = this.swimmerRegistrationForm.value
+      let foundOne = this.Cards.find(item => {
+        return item.distance == FormValue.distance && item.style == FormValue.style && item.name == FormValue.name && item.lastname == FormValue.lastname;
+      })
+      if (!foundOne) {
+        this.loading = true;
+        this.info = { ...FormValue, poolSize: '50მ' }
+        this._resultsService.getSwimmerCardInfo(this.info)
+          .subscribe(
+            async res => {
+              this.loading = false;
+              let newCardInfo = { ...res, ...this.info }
+              this.Cards.push(newCardInfo)
+            },
+            err => {
+              this.loading = false;
+              let newCardInfo = { ...this.info }
+              this.Cards.push(newCardInfo)
+            })
+      } else {
+        alert('ასეთი ბარათი უკვე არსებობს')
+      }
     }
   }
-
 }
