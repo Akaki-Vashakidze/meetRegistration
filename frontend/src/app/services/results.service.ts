@@ -14,6 +14,10 @@ export class ResultsService {
     return this._http.get<any>(environment.resultsURL)
   }
 
+  getNames(){
+    return this._http.get<any>(environment.namesURL)
+  }
+
   getMeetResults (meetName:any) {
     return this._http.post<any>(environment.meetResultsURL,{meetName})
   }
@@ -27,6 +31,7 @@ export class ResultsService {
   }
 
   getSwimmerCardInfo(cardInfo:any) {
+    console.log(cardInfo)
     return this._http.post<any>(environment.swimmerCardInfoURL,cardInfo)
   }
 

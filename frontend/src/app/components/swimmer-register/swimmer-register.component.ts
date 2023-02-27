@@ -13,6 +13,8 @@ import { ResultsService } from 'src/app/services/results.service';
 export class SwimmerRegisterComponent implements OnDestroy, OnInit {
   swimmerRegistrationForm: FormGroup;
   lastnameSearch: any = '';
+  info:any;
+  loading :boolean = false;
   distances: any[] = [
     { value: '50' }, { value: '100' }, { value: '200' }, { value: '400' }, { value: '800' }, { value: '1500' }
   ]
@@ -21,7 +23,7 @@ export class SwimmerRegisterComponent implements OnDestroy, OnInit {
   ]
   sidenavSubscribe: Subscription;
   Cards: object[] = [
-    {},
+   
   ]
   constructor(private _authService: AuthService, private _resultsService: ResultsService, private router: Router) { }
   opened: boolean;
@@ -53,9 +55,10 @@ export class SwimmerRegisterComponent implements OnDestroy, OnInit {
       })
     })
 
-    this._resultsService.getResults()
+    this._resultsService.getNames()
       .subscribe(
         res => {
+          console.log(res)
           this.allResults = res;
           let names = []
           // ეს საშინელებაა და  გასაკეთებელიი გააქვსსსსსსსსსსსს
@@ -69,7 +72,6 @@ export class SwimmerRegisterComponent implements OnDestroy, OnInit {
             }
           })
           this.allSwimmersNames = [...new Set(names)]
-          console.log(this.allSwimmersNames)
         },
         err => {
           console.log(err)
@@ -78,16 +80,16 @@ export class SwimmerRegisterComponent implements OnDestroy, OnInit {
   }
 
   clickedOutside() {
-    if (this.swimmerRegistrationForm.value.lastname ) {
-      if( this.swimmerRegistrationForm.value.lastname.split(' ')[1]) {
-      this.swimmer.name = this.swimmerRegistrationForm.value.lastname.split(' ')[1]
-      this.swimmer.lastname = this.swimmerRegistrationForm.value.lastname.split(' ')[0]
-      this.swimmerRegistrationForm.patchValue({
-        'lastname': this.swimmer.lastname,
-        'name': this.swimmer.name
-      })
+    if (this.swimmerRegistrationForm.value.lastname) {
+      if (this.swimmerRegistrationForm.value.lastname.split(' ')[1]) {
+        this.swimmer.name = this.swimmerRegistrationForm.value.lastname.split(' ')[1]
+        this.swimmer.lastname = this.swimmerRegistrationForm.value.lastname.split(' ')[0]
+        this.swimmerRegistrationForm.patchValue({
+          'lastname': this.swimmer.lastname,
+          'name': this.swimmer.name
+        })
+      }
     }
-  }
   }
 
 
@@ -100,13 +102,21 @@ export class SwimmerRegisterComponent implements OnDestroy, OnInit {
     if (this.swimmerRegistrationForm.status == 'INVALID') {
       alert('გთხოვთ შეავსოთ ყველა საჭირო გრაფა')
     } else {
-      this._resultsService.getSwimmerCardInfo(this.swimmerRegistrationForm.value)
+       this.loading = true;
+       this.info = { ...this.swimmerRegistrationForm.value, poolSize: '50მ' }
+      //აქ ტყუილად ვაგზავნი ინფოს მაგრამ ჯერ იყოს მაინც, იმიტომ რომ მერე უნდა გადავაკეთო ბექში და იქვე მოვძებნო ის შედეგები რაც მჭირდება.
+      this._resultsService.getSwimmerCardInfo(this.info)
         .subscribe(
-          res => {
-            console.log(res)
+          async res => {
+            this.loading = false;
+            let newCardInfo = {...this.info,...res}
+            this.Cards.push(newCardInfo)
+            console.log(newCardInfo)
           },
           err => {
-            console.log(err)
+            this.loading = false;
+            let newCardInfo = {...this.info}
+            this.Cards.push(newCardInfo)
           })
     }
   }

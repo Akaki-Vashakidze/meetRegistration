@@ -52,7 +52,8 @@
      
         <button mat-raised-button (click)="sidenav.toggle()">{{opened?'X':'დამატება'}}</button>
         <div class="cards">
-            <app-swimmer-card *ngFor="let card of Cards"></app-swimmer-card>
+            <app-swimmer-card [style]="card.style" [distance]="card.distance" [gender]="card.gender" [result]="card.result" [age]="card.age" [club]="card.club" [lastname]="card.lastname" [name]="card.name" *ngFor="let card of Cards"></app-swimmer-card>
+            <mat-spinner *ngIf="loading;"></mat-spinner>
         </div>
     </mat-sidenav-content>
 </mat-sidenav-container>
