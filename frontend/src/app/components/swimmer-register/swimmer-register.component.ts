@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { map, Observable, startWith, Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { ResultsService } from 'src/app/services/results.service';
@@ -13,8 +13,13 @@ import { ResultsService } from 'src/app/services/results.service';
 export class SwimmerRegisterComponent implements OnDestroy, OnInit {
   swimmerRegistrationForm: FormGroup;
   lastnameSearch: any = '';
+  slowInternet: boolean = false;
   info: any;
   loading: boolean = false;
+  waitingNames: boolean = false;
+  compName : string;
+  compDate :string;
+  poolSize: string;
   distances: any[] = [
     { value: '50' }, { value: '100' }, { value: '200' }, { value: '400' }, { value: '800' }, { value: '1500' }
   ]
@@ -25,7 +30,7 @@ export class SwimmerRegisterComponent implements OnDestroy, OnInit {
   Cards: any = [
 
   ]
-  constructor(private _authService: AuthService, private _resultsService: ResultsService, private router: Router) { }
+  constructor(private _route:ActivatedRoute,private _router:Router,private _authService: AuthService, private _resultsService: ResultsService, private router: Router) { }
   opened: boolean;
   newCardSwimmerInfo: object;
   allResults: any;
@@ -39,33 +44,31 @@ export class SwimmerRegisterComponent implements OnDestroy, OnInit {
   }
 
 
-  shortenName(style){
-      if(style == 'თავისუფალი ყაიდა') {
-        return ' თ/ყ'
-      }if(style == 'გულაღმა ცურვა') {
-        return ' გ/ც'
-      }if(style == 'კომპლექსი') {
-        return ' კომპ.'
-      }if(style == 'ბატერფლაი') {
-        return ' ბატ.'
-      }if(style == 'ბრასი') {
-        return ' ბრასი'
-      }
-      return ''
+  shortenName(style) {
+    if (style == 'თავისუფალი ყაიდა') {
+      return ' თ/ყ'
+    } if (style == 'გულაღმა ცურვა') {
+      return ' გ/ც'
+    } if (style == 'კომპლექსი') {
+      return ' კომპ.'
+    } if (style == 'ბატერფლაი') {
+      return ' ბატ.'
+    } if (style == 'ბრასი') {
+      return ' ბრასი'
+    }
+    return ''
   }
 
-  ngOnInit(): void {
-
-
+  ngOnInit(): void { 
+ this.compName = this._route.snapshot.params['compName']
+ this.compDate = this._route.snapshot.params['compDate']
+ this.poolSize = this._route.snapshot.params['poolSize']
     this.deleteCardSubscription = this._resultsService.deleteCards.subscribe(item => {
       for (let i = 0; i < this.Cards.length; i++) {
         if (this.Cards[i].name == item.name && this.Cards[i].lastname == item.lastname && this.Cards[i].age == item.age && this.Cards[i].distance == item.distance && this.Cards[i].style == item.style) {
           this.Cards.splice(i, 1)
         }
       }
-
-
-
     })
 
     this.sidenavSubscribe = this._resultsService.openedSidenav.subscribe((item) => {
@@ -84,10 +87,11 @@ export class SwimmerRegisterComponent implements OnDestroy, OnInit {
         return item.includes(val.lastname)
       })
     })
-
+    this.waitingNames = true;
     this._resultsService.getNames()
       .subscribe(
-       async res => {
+        async res => {
+          this.waitingNames = false;
           let names = await res;
           this.allSwimmersNames = [...new Set(names)]
         },
@@ -116,6 +120,23 @@ export class SwimmerRegisterComponent implements OnDestroy, OnInit {
     this.deleteCardSubscription.unsubscribe()
   }
 
+  registerSwimmers() {
+    let info = {
+      user: localStorage.getItem('user'),
+      cards: this.Cards
+    }
+    this._resultsService.registerSwimmers(info)
+      .subscribe(
+        res => {
+          alert('რეგისტრაცია დასრულდა წარმატებით')
+          this._router.navigate([''])
+        },
+        err => {
+          console.log(err)
+        }
+      )
+  }
+
   onSubmit() {
     if (this.swimmerRegistrationForm.status == 'INVALID') {
       alert('გთხოვთ შეავსოთ ყველა საჭირო გრაფა')
@@ -126,10 +147,15 @@ export class SwimmerRegisterComponent implements OnDestroy, OnInit {
       })
       if (!foundOne) {
         this.loading = true;
-        this.info = { ...FormValue, poolSize: '50მ' }
+        let compInfo = {
+          name:this.compName,
+          date:this.compDate
+        }
+        this.info = { ...FormValue, poolSize: this.poolSize + 'მ',compInfo:compInfo }
         this._resultsService.getSwimmerCardInfo(this.info)
           .subscribe(
             async res => {
+              console.log(res)
               this.loading = false;
               let newCardInfo = { ...res, ...this.info }
               this.Cards.push(newCardInfo)

@@ -12,6 +12,10 @@ export class ResultsService {
 
   constructor(private _http:HttpClient) { }
 
+  registerSwimmers(Cards:any){
+   return this._http.post<any>(environment.registerSwimmersURL,Cards)
+  }
+
   getResults(){
     return this._http.get<any>(environment.resultsURL)
   }

@@ -1,6 +1,8 @@
 <mat-sidenav-container>
     <mat-sidenav #sidenav mode="side" [(opened)]="opened">
-        <div>
+
+        <mat-spinner *ngIf="waitingNames;"></mat-spinner>
+        <div *ngIf="!waitingNames;">
             <form [formGroup]="swimmerRegistrationForm" (ngSubmit)="onSubmit()">
                 <mat-form-field appearance="fill">
                     <mat-label>დისტანცია</mat-label>
@@ -45,24 +47,25 @@
                         სახელის შეყვანა აუცილებელია
                     </mat-hint>
                 </mat-form-field>
-                <button class="button" type="submit" mat-raised-button style="width:200px">დამატება</button>
+                <button class="button" type="submit" mat-raised-button style="width:200px" color="primary">დამატება</button>
 
                 <button mat-raised-button style="width:200px" type="button" (click)="sidenav.close()">დახურვა</button>
             </form>
         </div>
-        <div class="shorterCards">
+        <div  *ngIf="!waitingNames;" class="shorterCards">
             <h3>შემოკლებული სია:</h3>
             <div class="swimmersShortenCardInfo" *ngFor="let shorterCard of Cards; let i = index"><span>{{i + 1 + ') '}}</span><span>{{shorterCard.lastname + ' ' + shorterCard.name + ' '}}</span><span>{{shorterCard.distance}}</span><span>{{shortenName(shorterCard.style)}}</span></div>
         </div>
     </mat-sidenav>
     <mat-sidenav-content>
-
+        <app-error *ngIf="slowInternet"></app-error>
         <button mat-raised-button (click)="sidenav.toggle()">{{opened?'X':'დამატება'}}</button>
         <div class="cards">
-            <app-swimmer-card [style]="card.style" [distance]="card.distance" [gender]="card.gender"
+            <app-swimmer-card [compName]="card.compInfo.name" [compDate]="card.compInfo.date" [style]="card.style" [distance]="card.distance" [gender]="card.gender"
                 [result]="card.result" [age]="card.age" [club]="card.club" [lastname]="card.lastname" [name]="card.name"
                 *ngFor="let card of Cards"></app-swimmer-card>
-            <mat-spinner *ngIf="loading;"></mat-spinner>
+                <mat-spinner *ngIf="loading;"></mat-spinner>
+                <button *ngIf="Cards[0]" mat-raised-button class="swimmerRegistrationButton" (click)="registerSwimmers()" color="primary">მოცურავეების დარეგისტრირება</button>
         </div>
     </mat-sidenav-content>
 </mat-sidenav-container>

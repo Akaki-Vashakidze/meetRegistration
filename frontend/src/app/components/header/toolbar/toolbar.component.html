@@ -5,7 +5,7 @@
         </span>
         <span class="rightMenu">
             <span *ngIf="user" routerLinkActive="active" routerLink="/results" class="login pointer">შედეგები</span>
-            <span *ngIf="user"  routerLinkActive="active" (click)="openSidenav()" routerLink="/swimmerRegistraton" class="competitions pointer">შეჯიბრზე დარეგისტრირება</span>
+            <span *ngIf="user"  routerLinkActive="active" (click)="openSidenav()" routerLink="/competitionsRegistraton" class="competitions pointer">შეჯიბრზე დარეგისტრირება</span>
             <span *ngIf="!user"  routerLinkActive="active" routerLink="/registration" class="register pointer">რეგისტრაცია</span>
             <span *ngIf="!user"  routerLinkActive="active" routerLink="/login" class="login pointer">შესვლა</span>
             <!-- <span *ngIf="user" routerLink="/addactcodes" class="logout pointer">აქტივაციის კოდების დამატება</span> -->

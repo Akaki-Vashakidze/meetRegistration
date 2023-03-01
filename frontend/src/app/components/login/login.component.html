@@ -1,5 +1,6 @@
-
-<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+<app-error *ngIf="slowInternet"></app-error>
+<mat-spinner *ngIf="loading"></mat-spinner>
+<form *ngIf="!loading && !slowInternet" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
    
     <mat-form-field class="form-group">
         <mat-label for="email">მეილი:</mat-label>

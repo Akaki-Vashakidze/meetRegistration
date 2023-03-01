@@ -7,4 +7,5 @@ export const environment = {
     meetResultsURL:'http://localhost:3500/api/meetResults',
     eventResultsURL:'http://localhost:3500/api/eventResults',
     swimmerCardInfoURL:'http://localhost:3500/api/swimmerCardInfo',
+    registerSwimmersURL:'http://localhost:3500/api/registerSwimmers',
 };

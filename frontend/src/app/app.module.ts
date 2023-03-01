@@ -19,6 +19,8 @@ import { MeetEventResultsComponent } from './components/meet-event-results/meet-
 import { SwimmerRegisterComponent } from './components/swimmer-register/swimmer-register.component';
 import { SwimmerCardComponent } from './components/swimmer-card/swimmer-card.component';
 import { ClickedOutsideDirective } from './directives/clicked-outside.directive';
+import { ErrorComponent } from './components/error/error.component';
+import { CompetitionsListComponent } from './components/competitions-list/competitions-list.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +35,9 @@ import { ClickedOutsideDirective } from './directives/clicked-outside.directive'
     MeetEventResultsComponent,
     SwimmerRegisterComponent,
     SwimmerCardComponent,
-    ClickedOutsideDirective
+    ClickedOutsideDirective,
+    ErrorComponent,
+    CompetitionsListComponent
   ],
   imports: [
     BrowserModule,

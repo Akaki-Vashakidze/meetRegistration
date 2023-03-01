@@ -27,17 +27,14 @@ export class RegistrationComponent implements OnInit{
   }
 
   onSubmit() {
-    console.log(this.registerForm.status)
-    console.log(this.registerForm.value)
     if (this.registerForm.status == 'INVALID') {
       alert('გთხოვთ შეავსოთ ყველა საჭირო გრაფა')
     } else {
      this._authService.registerUser(this.registerForm.value)
         .subscribe(
           res => {
-            console.log(res)
             localStorage.setItem('token',res.token)
-            localStorage.setItem('user',res.user.name + ' ' + res.user.lastname)
+            localStorage.setItem('user',res.user.name + ' ' + res.user.lastname + ' ' + res.user.email + ' ' + res.user.number)
             this._authService.SignedIn.next(true)
             this.router.navigate(['/results'])
           },

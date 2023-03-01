@@ -10,3 +10,17 @@ mat-form-field {
     width: 300px;
 }
 
+app-error {
+position: absolute;
+left: 50%;
+transform: translate(-50%,0);
+top: 20%;
+}
+
+mat-spinner{
+    position: absolute;
+left: 50%;
+transform: translate(-50%,0);
+top: 20%;
+}
+

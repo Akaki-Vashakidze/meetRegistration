@@ -18,6 +18,8 @@ export class SwimmerCardComponent {
   @Input() gender:string;
   @Input() distance:string;
   @Input() style:string;
+  @Input() compName:string;
+  @Input() compDate:string;
   swimmerRegistrationForm: FormGroup;
 
   distances: any[] = [

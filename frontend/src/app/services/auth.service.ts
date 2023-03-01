@@ -6,9 +6,11 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
+
 export class AuthService {
   constructor(private http:HttpClient) { }
   SignedIn = new BehaviorSubject<any>(localStorage.getItem('user'))
+  errorItem = new BehaviorSubject<any>('');
   registerUser(user) {
    return this.http.post<any>(environment.registrationURL,user)
   }

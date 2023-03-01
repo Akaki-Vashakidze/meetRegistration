@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken')
 const router = express.Router();
 const User = require('../models/user')
 const ActCode = require('../models/actCodes')
+const RegistrationInfo = require('../models/registeredSwimmers')
 const Results = require('../models/results')
 const mongoose = require('mongoose');
 const db = 'mongodb+srv://akak1:jvh7nROHs5RgjrCH@cluster0.fcpniir.mongodb.net/results?retryWrites=true&w=majority';
@@ -22,6 +23,20 @@ router.get('/', (req, res) => {
     res.send('From Api route')
 })
 
+router.post('/registerSwimmers',verifyToken, async (req,res) => {
+    try {
+        let registrationInfo = new RegistrationInfo(req.body)
+        registrationInfo.save((error, registeredInfo) => {
+            res.status(200).send({
+               registeredInfo
+            })
+        })
+    }
+    catch {
+         res.status(500).send("something went wrong")
+    }
+})
+
 router.post('/actcodes', async (req, res) => {
     try {
         // let actCode = await ActCode.create({code:req.body})
@@ -31,15 +46,15 @@ router.post('/actcodes', async (req, res) => {
         })
     }
     catch {
-        res.status(500).send("something went wrong1 111")
+     
     }
 })
 
-router.post('/meetResults',async(req,res)=> {
+router.post('/meetResults', async (req, res) => {
     try {
         let foundMeet;
-         await Results.find().then((results) => {
-            foundMeet =  results.find((item)=>{
+        await Results.find().then((results) => {
+            foundMeet = results.find((item) => {
                 return item.nameYear == req.body.meetName
             })
         })
@@ -50,18 +65,18 @@ router.post('/meetResults',async(req,res)=> {
     }
 })
 
-router.post('/eventResults',async(req,res)=> {
+router.post('/eventResults', async (req, res) => {
     try {
         let foundMeet;
         let foundEvent;
-         await Results.find().then((results) => {
-            foundMeet =  results.find((item)=>{
+        await Results.find().then((results) => {
+            foundMeet = results.find((item) => {
                 return item.nameYear == req.body.meetName
             })
         })
-        
-        foundEvent = await foundMeet.meetInfo.find((item)=>{
-         return item.event == req.body.eventName && item.gender == req.body.gender
+
+        foundEvent = await foundMeet.meetInfo.find((item) => {
+            return item.event == req.body.eventName && item.gender == req.body.gender
         })
         res.send(foundEvent)
     }
@@ -70,77 +85,77 @@ router.post('/eventResults',async(req,res)=> {
     }
 })
 
-router.post('/swimmerCardInfo', async(req,res) => {
+router.post('/swimmerCardInfo', async (req, res) => {
     let style = req.body.style;
-    style == 'ბატერფლაი' ? style = 'ბატ.': style=style;
-    style == 'თავისუფალი ყაიდა' ? style = 'თ/ყ': style=style;
-    style == 'გულაღმა ცურვა' ? style = 'გ/ც': style=style;
+    style == 'ბატერფლაი' ? style = 'ბატ.' : style = style;
+    style == 'თავისუფალი ყაიდა' ? style = 'თ/ყ' : style = style;
+    style == 'გულაღმა ცურვა' ? style = 'გ/ც' : style = style;
     let event = req.body.distance + ' ' + style;
     let swimmerFullName = req.body.lastname + ' ' + req.body.name;
     let poolSize = req.body.poolSize
     let meetInformation;
     try {
-      await Results.find()
-      .then(item => {
-       let array = []
-       for(let i=0;i<item.length;i++) {
-        if(item[i].course == poolSize) {
-            for (let j=0;j<item[i].meetInfo.length;j++) {
-            array.push(item[i].meetInfo[j]) 
-        }
-        }
-       }
-       return array
-      })
-      .then(item => {
-        let filteredEvents
-       for(let i = 0;i<item.length;i++) {
-        filteredEvents = item.filter(info => {
-            return info.event == event
-        })
-       }
-       return filteredEvents;
-      })
-      .then(item => {
-       let eventsAllResults = [];
-       for(let i = 0; i < item.length; i++) {
-        for(let j = 0;j < item[i].results.length;j++) {
-             eventsAllResults.push(item[i].results[j])
-        }
-        }
-        return eventsAllResults
-     })
-     .then(item => {
-        let searchedSwimmerAllEvents;
-        searchedSwimmerAllEvents = item.filter(info=>{
-           return info.name == swimmerFullName;
-        })
-        return searchedSwimmerAllEvents;
-     })
-     .then(item => {
-        // პუოლობს ყველაზე კარგ შედეგს;
-       let swimmerBestTime = item.reduce(function(prev, current) {
-        return (prev.resultForSort < current.resultForSort) ? prev : current
-    })
-       return swimmerBestTime;
-     })
-     .then(async item => {
-        // აქ იღებ ინფორმაციას მცურავეზე - კაცია თუ ქალი;
-       let hh = await Results.find({"meetInfo.results":{$elemMatch:{name:swimmerFullName}}})
-       for(let i = 0;i<hh.length;i++) {
-        for(let j = 0; j<hh[i].meetInfo.length;j++) {
-            for(let k = 0;k<hh[i].meetInfo[j].results.length;k++) {
-               if(hh[i].meetInfo[j].results[k].name == swimmerFullName) {
-                   return {...item,gender:hh[i].meetInfo[j].gender}
-               }
-            }
-        }
-       }
-     })
-     .then(item => {
-        res.send(item)
-     })
-      
+        await Results.find()
+            .then(item => {
+                let array = []
+                for (let i = 0; i < item.length; i++) {
+                    if (item[i].course == poolSize) {
+                        for (let j = 0; j < item[i].meetInfo.length; j++) {
+                            array.push(item[i].meetInfo[j])
+                        }
+                    }
+                }
+                return array
+            })
+            .then(item => {
+                let filteredEvents
+                for (let i = 0; i < item.length; i++) {
+                    filteredEvents = item.filter(info => {
+                        return info.event == event
+                    })
+                }
+                return filteredEvents;
+            })
+            .then(item => {
+                let eventsAllResults = [];
+                for (let i = 0; i < item.length; i++) {
+                    for (let j = 0; j < item[i].results.length; j++) {
+                        eventsAllResults.push(item[i].results[j])
+                    }
+                }
+                return eventsAllResults
+            })
+            .then(item => {
+                let searchedSwimmerAllEvents;
+                searchedSwimmerAllEvents = item.filter(info => {
+                    return info.name == swimmerFullName;
+                })
+                return searchedSwimmerAllEvents;
+            })
+            .then(item => {
+                // პუოლობს ყველაზე კარგ შედეგს;
+                let swimmerBestTime = item.reduce(function (prev, current) {
+                    return (prev.resultForSort < current.resultForSort) ? prev : current
+                })
+                return swimmerBestTime;
+            })
+            .then(async item => {
+                // აქ იღებ ინფორმაციას მცურავეზე - კაცია თუ ქალი;
+                let hh = await Results.find({ "meetInfo.results": { $elemMatch: { name: swimmerFullName } } })
+                for (let i = 0; i < hh.length; i++) {
+                    for (let j = 0; j < hh[i].meetInfo.length; j++) {
+                        for (let k = 0; k < hh[i].meetInfo[j].results.length; k++) {
+                            if (hh[i].meetInfo[j].results[k].name == swimmerFullName) {
+                                return { ...item, gender: hh[i].meetInfo[j].gender,compInfo:req.body.compInfo}
+                            }
+                        }
+                    }
+                }
+            })
+            .then(item => {
+                res.send(item)
+            })
+
     }
     catch (error) {
         console.log(error)
@@ -179,7 +194,7 @@ router.post('/register', async (req, res) => {
                     res.status(401).send('User Email is Taken')
                 } else {
                     // გამოყენებული აქტივაციის კოდის მონიშვნა 
-                    await ActCode.findOneAndUpdate({ actCode: userData.actCode }, { used: true , user:{name:userData.name,lastname:userData.lastname,email:userData.email}})
+                    await ActCode.findOneAndUpdate({ actCode: userData.actCode }, { used: true, user: { name: userData.name, lastname: userData.lastname, email: userData.email } })
                     //ახალი მომხმარებლის შენახვა
                     let user = new User(userData)
                     user.save((error, registeredUser) => {
@@ -191,14 +206,15 @@ router.post('/register', async (req, res) => {
                                 email: registeredUser.email,
                                 name: registeredUser.name,
                                 lastname: registeredUser.lastname,
+                                number:registeredUser.number
                             }
                         })
                     })
                 }
-            } 
-        }else {
-                res.status(401).send('acCode ი არასწორია')
             }
+        } else {
+            res.status(401).send('acCode ი არასწორია')
+        }
 
     }
     catch (error) {
@@ -228,6 +244,7 @@ router.post('/login', async (req, res) => {
                                 email: user.email,
                                 name: user.name,
                                 lastname: user.lastname,
+                                number:user.number
                             }
                         })
                     }
@@ -260,36 +277,36 @@ router.get('/results', verifyToken, async (req, res) => {
 
 router.get('/names', verifyToken, async (req, res) => {
     try {
-        Results.find({},{meetInfo:1})
-        .then((item) => {
-            let allResults=[]
-            item.map(item => {
-                for(let i = 0;i<item.meetInfo.length;i++){
-                    allResults.push(item.meetInfo[i]) 
-                }
+        Results.find({}, { meetInfo: 1 })
+            .then((item) => {
+                let allResults = []
+                item.map(item => {
+                    for (let i = 0; i < item.meetInfo.length; i++) {
+                        allResults.push(item.meetInfo[i])
+                    }
+                })
+                return allResults
             })
-            return allResults
-        })
-        .then(item => {
-            let allNameArr = [];
-            for(let i = 0;i<item.length;i++) {
-                if(item[i].results) {
-                    for(let j = 0; j<item[i].results.length;j++) {
-                    allNameArr.push(item[i].results[j])
+            .then(item => {
+                let allNameArr = [];
+                for (let i = 0; i < item.length; i++) {
+                    if (item[i].results) {
+                        for (let j = 0; j < item[i].results.length; j++) {
+                            allNameArr.push(item[i].results[j])
+                        }
+                    }
                 }
-                }
-            }
-            return allNameArr;
-        })
-        .then(item => {
-               let names = item.map(item => {
+                return allNameArr;
+            })
+            .then(item => {
+                let names = item.map(item => {
                     return item.name
                 })
                 return names;
-        })
-        .then(item=>{
-            res.send(item)
-        })
+            })
+            .then(item => {
+                res.send(item)
+            })
     }
     catch (error) {
         res.status(500).send("something went wrong")

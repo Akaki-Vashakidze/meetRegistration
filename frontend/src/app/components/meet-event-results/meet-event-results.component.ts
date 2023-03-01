@@ -32,7 +32,6 @@ ngOnInit(): void {
  this._resultsService.getEventResults(this.meet,this.event,this.gender)
  .subscribe(
    res => {
-    console.log(res)
     this.loading = false;
     this.header = res.event + ' ' + res.gender;
     this.results = res;

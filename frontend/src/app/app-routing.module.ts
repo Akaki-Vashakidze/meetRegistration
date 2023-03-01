@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AddActCodesComponent } from './components/add-act-codes/add-act-codes.component';
+import { CompetitionsListComponent } from './components/competitions-list/competitions-list.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { MeetEventResultsComponent } from './components/meet-event-results/meet-event-results.component';
@@ -13,7 +14,8 @@ import { AuthGuard } from './guards/auth.guard';
 const routes: Routes = [
   {path:'registration',component:RegistrationComponent},
   {path:'login',component:LoginComponent},
-  {path:'swimmerRegistraton',component:SwimmerRegisterComponent},
+  {path:'competitionsRegistraton',component:CompetitionsListComponent},
+  {path:'swimmerRegistraton/:compName/:compDate/:poolSize',component:SwimmerRegisterComponent},
   // {path:'addactcodes',component:AddActCodesComponent},
   {path:'meetResults/:meet',component:MeetResultsComponent,canActivate:[AuthGuard]},
   {path:'meetEventResults/:event/:meet/:gender',component:MeetEventResultsComponent,canActivate:[AuthGuard]},

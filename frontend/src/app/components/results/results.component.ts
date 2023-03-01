@@ -15,19 +15,33 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class ResultsComponent implements OnInit{
   results: any = [];
+  slowInternet : boolean = false;
   dataSource: any;
   columns: string[] = ['name', 'date', 'course', 'results'];
   loading: boolean = false;
   @ViewChild(MatSort) sort: MatSort | any;
   @ViewChild(MatPaginator) paginator: MatPaginator | any;
+  
   constructor(private _resultsService: ResultsService, private _router: Router, private _authService: AuthService) { }
 
+   slowIntTimeout = setTimeout(() => {
+    if(this.loading == true) {
+    this.slowInternet = true;
+    this._authService.errorItem.next('slow Internet (results), please check internet connection and tru again!')
+    this.loading = false;
+     alert('slow internet problem (results), check internet connection and try again')
+    }
+  
+   }, 5000);
+
   ngOnInit(): void {
+   
     this.loading = true;
      this._resultsService.getResults()
       .subscribe(
         res => {
           this.loading = false;
+          this.slowInternet = false;
           this.results = res;
           this.dataSource = new MatTableDataSource(this.results);
           this.dataSource.sort = this.sort;

@@ -9,7 +9,11 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
+  slowInternet:boolean = false;
+  loading:boolean = false;
   constructor(private _authService: AuthService,private router:Router) { }
+
+ 
 
   ngOnInit(): void {
     this.loginForm = new FormGroup({
@@ -19,18 +23,35 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
+
+      setTimeout(() => {
+      if(this.loading == true) {
+        this.slowInternet = true;
+        this._authService.errorItem.next('slow Internet (Login), please check internet connection and tru again!')
+        this.loading = false;
+         alert('slow internet problem (Login), check internet connection and try again')
+        }
+    }, 5000);
+
+
+    this.loading = true;
     if (this.loginForm.status == 'INVALID') {
       alert('გთხოვთ შეავსოთ ყველა საჭირო გრაფა')
     } else {
      this._authService.loginUser(this.loginForm.value)
         .subscribe(
           res => {
+            this.loading=false;
+            this.slowInternet = false;
            localStorage.setItem('token',res.token)
-           localStorage.setItem('user',res.user.name + ' ' + res.user.lastname)
+           localStorage.setItem('user',res.user.name + ' ' + res.user.lastname  + ' ' + res.user.email + ' ' + res.user.number)
            this._authService.SignedIn.next(true)
            this.router.navigate(['/results'])
           },
-          err => { console.log(err) }
+          err => { 
+            this._authService.errorItem.next('login Error')
+            console.log(err) 
+          }
         )
     }
   }

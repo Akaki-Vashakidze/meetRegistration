@@ -1,4 +1,5 @@
 <form [formGroup]="swimmerRegistrationForm" (ngSubmit)="onSubmit()">
+    <div><div>შეჯიბრის დასახელება:</div><div>{{compName}}</div></div>
     <mat-form-field appearance="fill">
         <mat-label>დისტანცია</mat-label>
         <mat-select formControlName="distance">
