@@ -6,6 +6,6 @@ export const environment = {
     actCodesURL:'http://localhost:3500/registration/actcodes',
     meetResultsURL:'http://localhost:3500/results/meetResults',
     eventResultsURL:'http://localhost:3500/results/eventResults',
-    swimmerCardInfoURL:'http://localhost:3500/results/swimmerCardInfo',
+    swimmerCardInfoURL:'http://localhost:3500/meetRegistration/swimmerCardInfo',
     registerSwimmersURL:'http://localhost:3500/meetRegistration/registerSwimmers',
 };
