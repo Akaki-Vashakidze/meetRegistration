@@ -22,7 +22,6 @@ export class ResultsService {
 
 
   getNames(){
-    console.log('sss')
     return this._http.get<any>(environment.namesURL)
   }
 

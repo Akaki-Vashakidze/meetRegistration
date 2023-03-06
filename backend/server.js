@@ -2,12 +2,31 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors')
 const PORT  = 3500;
-const api = require('./routes/api')
+const meetRegistration = require('./routes/meetRegistration')
+const registration = require('./routes/registration')
+const login = require('./routes/login')
+const results = require('./routes/results')
 const app = express()
+
+const mongoose = require('mongoose');
+const db = 'mongodb+srv://akak1:jvh7nROHs5RgjrCH@cluster0.fcpniir.mongodb.net/results?retryWrites=true&w=majority';
+
 app.use(cors())
 app.use(bodyParser.json())
 
-app.use('/api',api)
+mongoose.connect(db, err => {
+    if (err) {
+        console.log(err)
+    } else {
+        console.log('connected to mongodb')
+    }
+})
+
+
+app.use('/meetRegistration',meetRegistration)
+app.use('/registration',registration)
+app.use('/login',login)
+app.use('/results',results)
 
 app.get('/', function(req,res){
     res.send('Hellooooooo')
