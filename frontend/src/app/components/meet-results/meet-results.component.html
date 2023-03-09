@@ -9,21 +9,21 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">
           ივენთი
         </th>
-        <td mat-cell *matCellDef="let info"> {{info.event}} </td>
+        <td mat-cell *matCellDef="let info"> {{info.split(' ')[0] + ' ' + info.split(' ')[1]}} </td>
       </ng-container>
     
       <ng-container matColumnDef="gender">
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by weight">
          სქესი
         </th>
-        <td mat-cell *matCellDef="let info"> {{info.gender}} </td>
+        <td mat-cell *matCellDef="let info"> {{info.split(' ')[2]}} </td>
       </ng-container>
     
       <ng-container matColumnDef="results">
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by symbol">
           შედეგები
         </th>
-        <td mat-cell *matCellDef="let info"><a (click)="seeEvents(info)" >შედეგები</a></td>
+        <td mat-cell *matCellDef="let info"><a (click)="seeEvents(info.split(' ')[0] + ' ' + info.split(' ')[1],info.split(' ')[2])" >შედეგები</a></td>
       </ng-container>
     
       <tr mat-header-row *matHeaderRowDef="columns"></tr>

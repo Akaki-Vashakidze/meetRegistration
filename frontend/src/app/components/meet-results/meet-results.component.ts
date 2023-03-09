@@ -19,20 +19,19 @@ export class MeetResultsComponent implements OnInit{
   @ViewChild(MatSort) sort: MatSort | any;
   @ViewChild(MatPaginator) paginator: MatPaginator | any;
 constructor(private route:ActivatedRoute,private _router:Router, private _authService:AuthService ,private _resultsService:ResultsService){}
-meet:string;
+meetID:string;
 name:string;
 ngOnInit(): void {
   this.loading = true;
- this.meet = this.route.snapshot.params['meet']
- this._resultsService.getMeetResults(this.meet)
+ this.meetID = this.route.snapshot.params['meetID']
+ this._resultsService.getMeetResults(this.meetID)
  .subscribe(
    res => {
-    this.name = res.meetName + res.date.split('.')[1]
     this.loading = false;
-     this.results = res;
-     this.dataSource = new MatTableDataSource(this.results.meetInfo);
-     this.dataSource.sort = this.sort;
-     this.dataSource.paginator = this.paginator;
+    this.results = res;
+    this.dataSource = new MatTableDataSource(res);
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
    },
    err => {
     console.log(err)
@@ -41,7 +40,7 @@ ngOnInit(): void {
    }
  )
 }
-seeEvents(meet:any){
-this._router.navigate(['meetEventResults',meet.event,this.meet,meet.gender])
+seeEvents(event:any,gender:any){
+this._router.navigate(['meetEventResults',event,this.meetID,gender])
 }
 }

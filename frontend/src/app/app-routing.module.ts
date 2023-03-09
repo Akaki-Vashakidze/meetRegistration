@@ -17,8 +17,8 @@ const routes: Routes = [
   {path:'competitionsRegistraton',component:CompetitionsListComponent},
   {path:'swimmerRegistraton/:compName/:compDate/:poolSize',component:SwimmerRegisterComponent},
   // {path:'addactcodes',component:AddActCodesComponent},
-  {path:'meetResults/:meet',component:MeetResultsComponent,canActivate:[AuthGuard]},
-  {path:'meetEventResults/:event/:meet/:gender',component:MeetEventResultsComponent,canActivate:[AuthGuard]},
+  {path:'meetResults/:meetID',component:MeetResultsComponent,canActivate:[AuthGuard]},
+  {path:'meetEventResults/:event/:meetID/:gender',component:MeetEventResultsComponent,canActivate:[AuthGuard]},
   {path:'results',component:ResultsComponent,canActivate:[AuthGuard]},
   {path:'',component:HomeComponent},
 ];

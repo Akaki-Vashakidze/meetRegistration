@@ -21,23 +21,21 @@ header:string;
   @ViewChild(MatPaginator) paginator: MatPaginator | any;
 constructor(private route:ActivatedRoute,private _router:Router, private _authService:AuthService ,private _resultsService:ResultsService){}
 event:string;
-meet:string;
+meetID:string;
 gender:string;
 ngOnInit(): void {
   this.loading = true;
  this.event = this.route.snapshot.params['event']
- this.meet = this.route.snapshot.params['meet']
+ this.meetID = this.route.snapshot.params['meetID']
  this.gender = this.route.snapshot.params['gender']
- console.log(this.meet,this.event)
- this._resultsService.getEventResults(this.meet,this.event,this.gender)
+ this._resultsService.getEventResults(this.meetID,this.event,this.gender)
  .subscribe(
-   res => {
-    this.loading = false;
-    this.header = res.event + ' ' + res.gender;
-    this.results = res;
-     this.dataSource = new MatTableDataSource(this.results.results);
-     this.dataSource.sort = this.sort;
-     this.dataSource.paginator = this.paginator;
+    res => {
+      this.loading = false;
+      this.header = res.event + ' ' + res.gender;
+      this.dataSource = new MatTableDataSource(res.results);
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
    },
    err => {
     console.log(err)

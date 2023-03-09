@@ -55,6 +55,6 @@ export class ResultsComponent implements OnInit{
   }
 
   seeResults(item:any){
-    this._router.navigate(['/meetResults',item.nameYear])
+    this._router.navigate(['/meetResults',item._id])
   }
 }

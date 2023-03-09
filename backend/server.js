@@ -7,11 +7,13 @@ const registration = require('./routes/registration')
 const login = require('./routes/login')
 const results = require('./routes/results')
 const app = express()
+const compression = require('compression')
 
 const mongoose = require('mongoose');
-const db = 'mongodb+srv://akak1:jvh7nROHs5RgjrCH@cluster0.fcpniir.mongodb.net/results?retryWrites=true&w=majority';
+const db = 'mongodb+srv://akak1:Akaki111111@cluster0.fcpniir.mongodb.net/results?retryWrites=true&w=majority';
 
 app.use(cors())
+app.use(compression())
 app.use(bodyParser.json())
 
 mongoose.connect(db, err => {
@@ -29,7 +31,7 @@ app.use('/login',login)
 app.use('/results',results)
 
 app.get('/', function(req,res){
-    res.send('Hellooooooo')
+    
 })
 
 app.listen(PORT,function(){

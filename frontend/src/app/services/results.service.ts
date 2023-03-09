@@ -25,12 +25,13 @@ export class ResultsService {
     return this._http.get<any>(environment.namesURL)
   }
 
-  getMeetResults (meetName:any) {
-    return this._http.post<any>(environment.meetResultsURL,{meetName})
+  getMeetResults (meetId:any) {
+    return this._http.post<any>(environment.meetResultsURL,{meetId})
   }
 
-  getEventResults (meetName:any,eventName:any,gender:any) {
-  return this._http.post<any>(environment.eventResultsURL,{meetName,eventName,gender})
+  getEventResults (meetID:any,eventName:any,gender:any) {
+    let info = {eventName,meetID,gender}
+  return this._http.post<any>(environment.eventResultsURL,info)
   }
 
   openSidenav() {
