@@ -64,15 +64,22 @@ exports.getSwimmerCardInfo = async (req, res) => {
             if(swimmerAllEvents.length > 0) {
                  return swimmerAllEvents
             } else {
-                CompResults.findOne({"results.name":req.body.lastname + ' ' + req.body.name})
-                .then(item => {
-                        let obj = item.results.find(info => {
-                        return info.name === req.body.lastname + ' ' + req.body.name
-                    })
-                    let option2 = {name:obj.name,age:obj.age,club:obj.club,gender:obj.gender,compInfo:req.body.compInfo}
-                    // res.send({name:obj.name,age:obj.age,club:obj.club,gender:obj.gender})
-                    res.send(option2)
+                CompResults.findOne({"results.name":req.body.lastname + ' ' + req.body.name},(err,item)=>{
+                    if(item) {
+                         let obj = item.results.find(info => {
+                              return info.name === req.body.lastname + ' ' + req.body.name
+                          })
+                          let option2 = {name:obj.name,age:obj.age,club:obj.club,gender:obj.gender,compInfo:req.body.compInfo}
+                          // res.send({name:obj.name,age:obj.age,club:obj.club,gender:obj.gender})
+                          res.send(option2)
+                    }
+                    else {
+                        res.status(404).send(err)
+                    }
                 })
+            
+                    
+              
             }
         })
         .then(item => {

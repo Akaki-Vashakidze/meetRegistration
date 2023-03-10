@@ -23,7 +23,7 @@ export class SwimmerCardComponent {
   @Input() bestResultCompName:string;
   @Input() bestResultCompDate:string;
   swimmerRegistrationForm: FormGroup;
-  writeResult = '';
+  lastValueLength:number = 0;
 
   distances: any[] = [
     {value:'50'}, {value:'100'}, {value:'200'}, {value:'400'}, {value:'800'}, {value:'1500'}
@@ -36,14 +36,13 @@ export class SwimmerCardComponent {
   constructor(private _authService: AuthService,private router:Router,private _resultsService:ResultsService) { }
 
   ngOnInit(): void {
-    this.writeResult = this.result;
     console.log(this.name,this.age,this.club,this.gender)
     this.swimmerRegistrationForm = new FormGroup({
       'bestResultCompName': new FormControl(null),
       'bestResultCompDate': new FormControl(null),
       'age': new FormControl(null, Validators.required),
       'club': new FormControl(null, Validators.required),
-      'result': new FormControl(null, Validators.required),
+      'result': new FormControl(null, [Validators.required,Validators.minLength(8),Validators.maxLength(8)]),
       'gender': new FormControl(null, Validators.required),
       'lastname': new FormControl(null, [Validators.required]),
       'name': new FormControl(null, Validators.required),
@@ -52,6 +51,26 @@ export class SwimmerCardComponent {
     })
     let selectGender;
     this.gender == 'კაცები' ? selectGender = 'male' : selectGender = 'female';
+
+    this.swimmerRegistrationForm.get('result').valueChanges.subscribe(val => {
+     // შემოწმება. თუ მომხმარებელი შლის შედეგს მაშინ აღარ დაემატება : და  . 
+      if(this.lastValueLength > val.length && val.length == 2 ||this.lastValueLength > val.length && val.length == 5 ){
+       console.log('არ დაემატა იმიტომ რომ შლიდა')
+      } else {
+        if(val.length == 2) {
+          this.swimmerRegistrationForm.patchValue({
+            'result': val + ':'
+          })
+      }
+      if(val.length == 5) {
+        this.swimmerRegistrationForm.patchValue({
+          'result': val + '.'
+        })
+      }
+      }
+      
+      this.lastValueLength = val.length;
+    })
 
     if(this.result) {
        this.swimmerRegistrationForm.setValue({

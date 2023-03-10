@@ -65,11 +65,19 @@
 
         <mat-form-field class="form-group">
             <mat-label for="result">შედეგი:</mat-label>
-            <input [(ngModel)]="writeResult" matInput type="result" id="result" formControlName="result" class="form-control">
+            <input matInput type="result" id="result" placeholder="01:01.01" formControlName="result" class="form-control">
             <mat-hint style="color:red;"
                 *ngIf="swimmerRegistrationForm.get('result')?.touched  && swimmerRegistrationForm.get('result')?.errors?.['required']">
                 შედეგი შეყვანა აუცილებელია
             </mat-hint>
+            <mat-hint style="color:red;"
+            *ngIf="swimmerRegistrationForm.get('result')?.touched  && swimmerRegistrationForm.get('result')?.errors?.['minlength']">
+               შეყვანილი შედეგის ფორმატი არასწორია. სწორი ფორმატი - 01:01.01
+        </mat-hint>
+        <mat-hint style="color:red;"
+        *ngIf="swimmerRegistrationForm.get('result')?.touched  && swimmerRegistrationForm.get('result')?.errors?.['maxlength']">
+           შეყვანილი შედეგის ფორმატი არასწორია. სწორი ფორმატი - 01:01.01
+    </mat-hint>
         </mat-form-field>
 
         <mat-form-field *ngIf="bestResultCompName" class="form-group">
