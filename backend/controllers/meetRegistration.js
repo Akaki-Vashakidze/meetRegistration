@@ -1,6 +1,7 @@
 
 const Results = require('../models/results')
 const RegistrationInfo = require('../models/registeredSwimmers')
+const CompResults = require('../models/compResults')
 
 exports.registerSwimmers = async (req,res) => {
     try {
@@ -18,35 +19,19 @@ exports.registerSwimmers = async (req,res) => {
 
 exports.getNames =  async (req, res) => {
     try {
-        Results.find({}, { meetInfo: 1 })
+        CompResults.find({}, { results: 1 })
             .then((item) => {
-                let allResults = []
-                item.map(item => {
-                    for (let i = 0; i < item.meetInfo.length; i++) {
-                        allResults.push(item.meetInfo[i])
-                    }
-                })
-                return allResults
-            })
-            .then(item => {
-                let allNameArr = [];
-                for (let i = 0; i < item.length; i++) {
-                    if (item[i].results) {
-                        for (let j = 0; j < item[i].results.length; j++) {
-                            allNameArr.push(item[i].results[j])
-                        }
-                    }
+                let names = [];
+                for(let i = 0;i<item.length;i++){
+                   item[i].results.map(item => {
+                    names.push(item.name)
+                   })
                 }
-                return allNameArr;
-            })
-            .then(item => {
-                let names = item.map(item => {
-                    return item.name
-                })
                 return names;
             })
             .then(item => {
-                res.send(item)
+                let filteredNames = [...new Set(item)]
+                res.send(filteredNames)
             })
     }
     catch (error) {
@@ -63,67 +48,42 @@ exports.getSwimmerCardInfo = async (req, res) => {
     let swimmerFullName = req.body.lastname + ' ' + req.body.name;
     let poolSize = req.body.poolSize
     let meetInformation;
+    let swimmerAllEvents = [];
     try {
-        await Results.find()
-            .then(item => {
-                let array = []
-                for (let i = 0; i < item.length; i++) {
-                    if (item[i].course == poolSize) {
-                        for (let j = 0; j < item[i].meetInfo.length; j++) {
-                            array.push(item[i].meetInfo[j])
-                        }
-                    }
-                }
-                return array
+        await CompResults.find()
+        .then(item => {
+            item.map(obj => {
+                obj.results.map(info => {
+                    if(info.name == req.body.lastname + ' ' + req.body.name && info.event == req.body.distance + ' ' + style && obj.course == poolSize) {
+                        info['bestResultCompName'] = obj.meetName
+                        info['bestResultCompDate'] = obj.date
+                        swimmerAllEvents.push(info)
+                    } 
+                })
             })
-            .then(item => {
-                let filteredEvents
-                for (let i = 0; i < item.length; i++) {
-                    filteredEvents = item.filter(info => {
-                        return info.event == event
+            if(swimmerAllEvents.length > 0) {
+                 return swimmerAllEvents
+            } else {
+                CompResults.findOne({"results.name":req.body.lastname + ' ' + req.body.name})
+                .then(item => {
+                        let obj = item.results.find(info => {
+                        return info.name === req.body.lastname + ' ' + req.body.name
                     })
-                }
-                return filteredEvents;
-            })
-            .then(item => {
-                let eventsAllResults = [];
-                for (let i = 0; i < item.length; i++) {
-                    for (let j = 0; j < item[i].results.length; j++) {
-                        eventsAllResults.push(item[i].results[j])
-                    }
-                }
-                return eventsAllResults
-            })
-            .then(item => {
-                let searchedSwimmerAllEvents;
-                searchedSwimmerAllEvents = item.filter(info => {
-                    return info.name == swimmerFullName;
+                    let option2 = {name:obj.name,age:obj.age,club:obj.club,gender:obj.gender,compInfo:req.body.compInfo}
+                    // res.send({name:obj.name,age:obj.age,club:obj.club,gender:obj.gender})
+                    res.send(option2)
                 })
-                return searchedSwimmerAllEvents;
-            })
-            .then(item => {
-                // პუოლობს ყველაზე კარგ შედეგს;
-                let swimmerBestTime = item.reduce(function (prev, current) {
-                    return (prev.resultForSort < current.resultForSort) ? prev : current
-                })
-                return swimmerBestTime;
-            })
-            .then(async item => {
-                // აქ იღებ ინფორმაციას მცურავეზე - კაცია თუ ქალი;
-                let hh = await Results.find({ "meetInfo.results": { $elemMatch: { name: swimmerFullName } } })
-                for (let i = 0; i < hh.length; i++) {
-                    for (let j = 0; j < hh[i].meetInfo.length; j++) {
-                        for (let k = 0; k < hh[i].meetInfo[j].results.length; k++) {
-                            if (hh[i].meetInfo[j].results[k].name == swimmerFullName) {
-                                return { ...item, gender: hh[i].meetInfo[j].gender,compInfo:req.body.compInfo}
-                            }
-                        }
-                    }
-                }
-            })
-            .then(item => {
-                res.send(item)
-            })
+            }
+        })
+        .then(item => {
+            if(item) {
+                      let swimmerBestTimeObj = item.reduce(function (prev, current) {
+                     return (prev.resultForSort < current.resultForSort) ? prev : current
+                 })
+                 res.send({ ...swimmerBestTimeObj,compInfo:req.body.compInfo})
+            }
+      
+        })
     }
     catch (error) {
         console.log(error)

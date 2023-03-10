@@ -17,8 +17,8 @@ export class SwimmerRegisterComponent implements OnDestroy, OnInit {
   info: any;
   loading: boolean = false;
   waitingNames: boolean = false;
-  compName : string;
-  compDate :string;
+  compName: string;
+  compDate: string;
   poolSize: string;
   distances: any[] = [
     { value: '50' }, { value: '100' }, { value: '200' }, { value: '400' }, { value: '800' }, { value: '1500' }
@@ -27,10 +27,8 @@ export class SwimmerRegisterComponent implements OnDestroy, OnInit {
     { value: 'ბატერფლაი' }, { value: 'გულაღმა ცურვა' }, { value: 'ბრასი' }, { value: 'თავისუფალი ყაიდა' }, { value: 'კომპლექსი' }
   ]
   sidenavSubscribe: Subscription;
-  Cards: any = [
-
-  ]
-  constructor(private _route:ActivatedRoute,private _router:Router,private _authService: AuthService, private _resultsService: ResultsService, private router: Router) { }
+  Cards: any = []
+  constructor(private _route: ActivatedRoute, private _router: Router, private _authService: AuthService, private _resultsService: ResultsService, private router: Router) { }
   opened: boolean;
   newCardSwimmerInfo: object;
   allResults: any;
@@ -59,10 +57,10 @@ export class SwimmerRegisterComponent implements OnDestroy, OnInit {
     return ''
   }
 
-  ngOnInit(): void { 
- this.compName = this._route.snapshot.params['compName']
- this.compDate = this._route.snapshot.params['compDate']
- this.poolSize = this._route.snapshot.params['poolSize']
+  ngOnInit(): void {
+    this.compName = this._route.snapshot.params['compName']
+    this.compDate = this._route.snapshot.params['compDate']
+    this.poolSize = this._route.snapshot.params['poolSize']
     this.deleteCardSubscription = this._resultsService.deleteCards.subscribe(item => {
       for (let i = 0; i < this.Cards.length; i++) {
         if (this.Cards[i].name == item.name && this.Cards[i].lastname == item.lastname && this.Cards[i].age == item.age && this.Cards[i].distance == item.distance && this.Cards[i].style == item.style) {
@@ -92,8 +90,7 @@ export class SwimmerRegisterComponent implements OnDestroy, OnInit {
       .subscribe(
         async res => {
           this.waitingNames = false;
-          let names = await res;
-          this.allSwimmersNames = [...new Set(names)]
+          this.allSwimmersNames = await res;
         },
         err => {
           console.log(err)
@@ -148,10 +145,10 @@ export class SwimmerRegisterComponent implements OnDestroy, OnInit {
       if (!foundOne) {
         this.loading = true;
         let compInfo = {
-          name:this.compName,
-          date:this.compDate
+          name: this.compName,
+          date: this.compDate
         }
-        this.info = { ...FormValue, poolSize: this.poolSize + 'მ',compInfo:compInfo }
+        this.info = { ...FormValue, poolSize: this.poolSize + 'მ', compInfo: compInfo }
         this._resultsService.getSwimmerCardInfo(this.info)
           .subscribe(
             async res => {
