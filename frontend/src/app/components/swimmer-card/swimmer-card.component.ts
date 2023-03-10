@@ -35,6 +35,15 @@ export class SwimmerCardComponent {
 
   constructor(private _authService: AuthService,private router:Router,private _resultsService:ResultsService) { }
 
+  pointValidator(control:FormControl){
+    //აქ ერრორს არ აგდებს თუ : არ არის ინფუთში. ჩვენ გვინდა წერტილის ვალიდატორიც
+  
+    if (control.value != null && control.value.length == 8 && control.value.split('')[4] != '.'  && control.value.split('')[2] != ':') {
+      return {twoDotsError:true}
+    }
+    return null
+  }
+
   ngOnInit(): void {
     console.log(this.name,this.age,this.club,this.gender)
     this.swimmerRegistrationForm = new FormGroup({
@@ -42,7 +51,7 @@ export class SwimmerCardComponent {
       'bestResultCompDate': new FormControl(null),
       'age': new FormControl(null, Validators.required),
       'club': new FormControl(null, Validators.required),
-      'result': new FormControl(null, [Validators.required,Validators.minLength(8),Validators.maxLength(8)]),
+      'result': new FormControl(null, [Validators.required,Validators.minLength(8),Validators.maxLength(8),this.pointValidator]),
       'gender': new FormControl(null, Validators.required),
       'lastname': new FormControl(null, [Validators.required]),
       'name': new FormControl(null, Validators.required),

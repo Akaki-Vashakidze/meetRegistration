@@ -65,29 +65,36 @@
 
         <mat-form-field class="form-group">
             <mat-label for="result">შედეგი:</mat-label>
-            <input matInput type="result" id="result" placeholder="01:01.01" formControlName="result" class="form-control">
+            <input matInput type="result" id="result" placeholder="01:01.01" formControlName="result"
+                class="form-control">
             <mat-hint style="color:red;"
                 *ngIf="swimmerRegistrationForm.get('result')?.touched  && swimmerRegistrationForm.get('result')?.errors?.['required']">
                 შედეგი შეყვანა აუცილებელია
             </mat-hint>
             <mat-hint style="color:red;"
-            *ngIf="swimmerRegistrationForm.get('result')?.touched  && swimmerRegistrationForm.get('result')?.errors?.['minlength']">
+                *ngIf="swimmerRegistrationForm.get('result')?.touched  && swimmerRegistrationForm.get('result')?.errors?.['minlength']">
+                შეყვანილი შედეგის ფორმატი არასწორია. სწორი ფორმატი - 01:01.01
+            </mat-hint>
+            <mat-hint style="color:red;"
+                *ngIf="swimmerRegistrationForm.get('result')?.touched  && swimmerRegistrationForm.get('result')?.errors?.['maxlength']">
+                შეყვანილი შედეგის ფორმატი არასწორია. სწორი ფორმატი - 01:01.01
+            </mat-hint>
+            <mat-hint style="color:red;"
+            *ngIf="swimmerRegistrationForm.get('result')?.touched  && swimmerRegistrationForm.get('result')?.errors?.['twoDotsError']">
                შეყვანილი შედეგის ფორმატი არასწორია. სწორი ფორმატი - 01:01.01
         </mat-hint>
-        <mat-hint style="color:red;"
-        *ngIf="swimmerRegistrationForm.get('result')?.touched  && swimmerRegistrationForm.get('result')?.errors?.['maxlength']">
-           შეყვანილი შედეგის ფორმატი არასწორია. სწორი ფორმატი - 01:01.01
-    </mat-hint>
         </mat-form-field>
 
         <mat-form-field *ngIf="bestResultCompName" class="form-group">
             <mat-label for="bestResultCompName">შეჯიბრი:</mat-label>
-            <input matInput type="bestResultCompName" id="bestResultCompName" formControlName="bestResultCompName" class="form-control">
+            <input matInput type="bestResultCompName" id="bestResultCompName" formControlName="bestResultCompName"
+                class="form-control">
         </mat-form-field>
 
         <mat-form-field *ngIf="bestResultCompDate" class="form-group">
             <mat-label for="bestResultCompDate">რიცხვი:</mat-label>
-            <input matInput type="bestResultCompDate" id="bestResultCompDate" formControlName="bestResultCompDate" class="form-control">
+            <input matInput type="bestResultCompDate" id="bestResultCompDate" formControlName="bestResultCompDate"
+                class="form-control">
         </mat-form-field>
         <div>
         </div>
