@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card" appClickedOutside (clickedOutside)="clickedOutside()">
     <div class="header">
         <div>შეჯიბრის დასახელება:</div>
         <div>{{compName}}</div>
@@ -40,7 +40,7 @@
             <mat-label for="age">დაბ.წელი:</mat-label>
             <input matInput type="age" id="age" formControlName="age" class="form-control">
             <mat-hint style="color:red;"
-                *ngIf="swimmerRegistrationForm.get('age')?.touched  && swimmerRegistrationForm.get('age')?.errors?.['required']">
+                *ngIf=" CardOutsideClick && swimmerRegistrationForm.get('age')?.errors?.['required'] || swimmerRegistrationForm.get('age')?.touched  && swimmerRegistrationForm.get('age')?.errors?.['required']">
                 დაბ.წელის შეყვანა აუცილებელია
             </mat-hint>
         </mat-form-field>
@@ -48,7 +48,7 @@
             <mat-label for="club">კლუბი</mat-label>
             <input matInput type="club" id="club" formControlName="club" class="form-control">
             <mat-hint style="color:red;"
-                *ngIf="swimmerRegistrationForm.get('club')?.touched  && swimmerRegistrationForm.get('club')?.errors?.['required']">
+                *ngIf=" CardOutsideClick &&  swimmerRegistrationForm.get('club')?.errors?.['required'] || swimmerRegistrationForm.get('club')?.touched  && swimmerRegistrationForm.get('club')?.errors?.['required']">
                 კლუბის შეყვანა აუცილებელია
             </mat-hint>
         </mat-form-field>
@@ -57,30 +57,31 @@
             <mat-label for="">სქესი:</mat-label>
             <mat-radio-button value="male">კაცი</mat-radio-button>
             <mat-radio-button value="female">ქალი</mat-radio-button>
-        </mat-radio-group>
-        <mat-hint style="color:red;"
-            *ngIf="swimmerRegistrationForm.get('gender')?.touched  && swimmerRegistrationForm.get('gender')?.errors?.['required']">
+            <mat-hint style="color:red;"
+            *ngIf=" CardOutsideClick &&  swimmerRegistrationForm.get('gender')?.errors?.['required'] ||swimmerRegistrationForm.get('gender')?.touched  && swimmerRegistrationForm.get('gender')?.errors?.['required']">
             სქესის არჩევა აუცილებელია
         </mat-hint>
+        </mat-radio-group>
+       
 
         <mat-form-field class="form-group">
             <mat-label for="result">შედეგი:</mat-label>
             <input matInput type="result" id="result" placeholder="01:01.01" formControlName="result"
                 class="form-control">
             <mat-hint style="color:red;"
-                *ngIf="swimmerRegistrationForm.get('result')?.touched  && swimmerRegistrationForm.get('result')?.errors?.['required']">
+                *ngIf="CardOutsideClick && swimmerRegistrationForm.get('result')?.errors?.['required'] || swimmerRegistrationForm.get('result')?.touched  && swimmerRegistrationForm.get('result')?.errors?.['required']">
                 შედეგი შეყვანა აუცილებელია
             </mat-hint>
             <mat-hint style="color:red;"
-                *ngIf="swimmerRegistrationForm.get('result')?.touched  && swimmerRegistrationForm.get('result')?.errors?.['minlength']">
+                *ngIf="CardOutsideClick && swimmerRegistrationForm.get('result')?.errors?.['minlength'] || swimmerRegistrationForm.get('result')?.touched  && swimmerRegistrationForm.get('result')?.errors?.['minlength']">
                 შეყვანილი შედეგის ფორმატი არასწორია. სწორი ფორმატი - 01:01.01
             </mat-hint>
             <mat-hint style="color:red;"
-                *ngIf="swimmerRegistrationForm.get('result')?.touched  && swimmerRegistrationForm.get('result')?.errors?.['maxlength']">
+                *ngIf="CardOutsideClick && swimmerRegistrationForm.get('result')?.errors?.['maxlength'] || swimmerRegistrationForm.get('result')?.touched  && swimmerRegistrationForm.get('result')?.errors?.['maxlength']">
                 შეყვანილი შედეგის ფორმატი არასწორია. სწორი ფორმატი - 01:01.01
             </mat-hint>
             <mat-hint style="color:red;"
-            *ngIf="swimmerRegistrationForm.get('result')?.touched  && swimmerRegistrationForm.get('result')?.errors?.['twoDotsError']">
+            *ngIf="CardOutsideClick && swimmerRegistrationForm.get('result')?.errors?.['twoDotsError'] || swimmerRegistrationForm.get('result')?.touched  && swimmerRegistrationForm.get('result')?.errors?.['twoDotsError']">
                შეყვანილი შედეგის ფორმატი არასწორია. სწორი ფორმატი - 01:01.01
         </mat-hint>
         </mat-form-field>

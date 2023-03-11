@@ -24,7 +24,7 @@ export class SwimmerCardComponent {
   @Input() bestResultCompDate:string;
   swimmerRegistrationForm: FormGroup;
   lastValueLength:number = 0;
-
+  CardOutsideClick:boolean = false;
   distances: any[] = [
     {value:'50'}, {value:'100'}, {value:'200'}, {value:'400'}, {value:'800'}, {value:'1500'}
   ]
@@ -114,6 +114,13 @@ export class SwimmerCardComponent {
       })
     }
    
+  }
+
+  clickedOutside() {
+    if(this.swimmerRegistrationForm.status == 'INVALID') {
+      alert('გთხოვთ შეავსოთ ბარათი ბოლომდე')
+      this.CardOutsideClick = true;
+    }
   }
 
   deleteCard(){
