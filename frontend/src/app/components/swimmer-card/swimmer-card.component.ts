@@ -37,11 +37,21 @@ export class SwimmerCardComponent {
 
   pointValidator(control:FormControl){
     //აქ ერრორს არ აგდებს თუ : არ არის ინფუთში. ჩვენ გვინდა წერტილის ვალიდატორიც
-  
     if (control.value != null && control.value.length == 8 && control.value.split('')[4] != '.'  && control.value.split('')[2] != ':') {
       return {twoDotsError:true}
     }
     return null
+  }
+
+  bornYearValidator(control:FormControl) {
+    let date = new Date();
+    let year = date.getFullYear()
+    if(control.value != null && control.value != '' && year - control.value > 100) {
+      return {oldGuyError:true}
+    } if(control.value != null && control.value != '' && year - control.value < 5) {
+      return {childError:true}
+    }
+    return null;
   }
 
   ngOnInit(): void {
@@ -49,7 +59,7 @@ export class SwimmerCardComponent {
     this.swimmerRegistrationForm = new FormGroup({
       'bestResultCompName': new FormControl(null),
       'bestResultCompDate': new FormControl(null),
-      'age': new FormControl(null, Validators.required),
+      'age': new FormControl(null, [Validators.required,this.bornYearValidator]),
       'club': new FormControl(null, Validators.required),
       'result': new FormControl(null, [Validators.required,Validators.minLength(8),Validators.maxLength(8),this.pointValidator]),
       'gender': new FormControl(null, Validators.required),
