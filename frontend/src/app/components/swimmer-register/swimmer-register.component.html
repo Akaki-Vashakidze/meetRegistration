@@ -61,9 +61,8 @@
         <app-error *ngIf="slowInternet"></app-error>
         <button mat-raised-button (click)="sidenav.toggle()">{{opened?'X':'დამატება'}}</button>
         <div class="cards">
-            <app-swimmer-card [bestResultCompName]="card.bestResultCompName" [bestResultCompDate]="card.bestResultCompDate" [compName]="card.compInfo.name" [compDate]="card.compInfo.date" [style]="card.style" [distance]="card.distance" [gender]="card.gender"
-                [result]="card.result" [age]="card.age" [club]="card.club" [lastname]="card.lastname" [name]="card.name"
-                *ngFor="let card of Cards"></app-swimmer-card>
+            <app-swimmer-card *ngFor="let card of Cards" [cardId]="card.id" [clubNames]="clubNames" [bestResultCompName]="card.bestResultCompName" [bestResultCompDate]="card.bestResultCompDate" [compName]="card.compInfo.name" [compDate]="card.compInfo.date" [style]="card.style" [distance]="card.distance" [gender]="card.gender" [result]="card.result" [age]="card.age" [club]="card.club" [lastname]="card.lastname" [name]="card.name"
+               ></app-swimmer-card>
                 <mat-spinner *ngIf="loading;"></mat-spinner>
                 <button *ngIf="Cards[0]" mat-raised-button class="swimmerRegistrationButton" (click)="registerSwimmers()" color="primary">მოცურავეების დარეგისტრირება</button>
         </div>

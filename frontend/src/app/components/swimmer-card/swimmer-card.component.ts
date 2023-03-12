@@ -1,6 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { ResultsService } from 'src/app/services/results.service';
 
@@ -9,9 +10,10 @@ import { ResultsService } from 'src/app/services/results.service';
   templateUrl: './swimmer-card.component.html',
   styleUrls: ['./swimmer-card.component.scss']
 })
-export class SwimmerCardComponent {
+export class SwimmerCardComponent implements OnDestroy,OnInit {
   @Input() name:string;
   @Input() lastname:string;
+  @Input() cardId:any;
   @Input() age:string;
   @Input() club:string;
   @Input() result:string;
@@ -22,9 +24,12 @@ export class SwimmerCardComponent {
   @Input() compDate:string;
   @Input() bestResultCompName:string;
   @Input() bestResultCompDate:string;
-  swimmerRegistrationForm: FormGroup;
+  @Input() clubNames:any;
+  CLUBnames : any;
+  swimmerRegistrationCardForm: FormGroup;
   lastValueLength:number = 0;
-  CardOutsideClick:boolean = false;
+  errorsOn:boolean = false;
+  errorsOnSubs:Subscription;
   distances: any[] = [
     {value:'50'}, {value:'100'}, {value:'200'}, {value:'400'}, {value:'800'}, {value:'1500'}
   ]
@@ -32,6 +37,8 @@ export class SwimmerCardComponent {
   styles: any[] = [
     {value:'ბატერფლაი'}, {value:'გულაღმა ცურვა'}, {value:'ბრასი'}, {value:'თავისუფალი ყაიდა'}, {value:'კომპლექსი'}
   ]
+
+  cardIdString : string;
 
   constructor(private _authService: AuthService,private router:Router,private _resultsService:ResultsService) { }
 
@@ -54,9 +61,20 @@ export class SwimmerCardComponent {
     return null;
   }
 
+  ngOnDestroy(): void {
+    this.errorsOnSubs.unsubscribe()
+  }
+
   ngOnInit(): void {
+
+    this.cardIdString = JSON.stringify(this.cardId)
+   this.errorsOnSubs = this._resultsService.errorsOn.subscribe(item => {
+      this.errorsOn = item
+    })
+
+    this._resultsService.IfCardIsFilled.next(false)
     console.log(this.name,this.age,this.club,this.gender)
-    this.swimmerRegistrationForm = new FormGroup({
+    this.swimmerRegistrationCardForm = new FormGroup({
       'bestResultCompName': new FormControl(null),
       'bestResultCompDate': new FormControl(null),
       'age': new FormControl(null, [Validators.required,this.bornYearValidator]),
@@ -71,18 +89,40 @@ export class SwimmerCardComponent {
     let selectGender;
     this.gender == 'კაცები' ? selectGender = 'male' : selectGender = 'female';
 
-    this.swimmerRegistrationForm.get('result').valueChanges.subscribe(val => {
+    this.swimmerRegistrationCardForm.get('club').valueChanges.subscribe(val => {
+      console.log(val)
+      console.log(this.clubNames)
+      if(val.length > 0) {
+      this.CLUBnames = this.clubNames.filter(item => {
+          console.log(item.name)
+          return item.name.includes(val)
+        })
+      }
+      console.log(this.CLUBnames)
+    })
+
+    this.swimmerRegistrationCardForm.valueChanges.subscribe(val => {
+      if(this.swimmerRegistrationCardForm.status == 'VALID') {
+        this._resultsService.IfCardIsFilled.next(true)
+        this._resultsService.errorsOn.next(false)
+      }
+      if(this.swimmerRegistrationCardForm.status == 'INVALID') {
+        this._resultsService.IfCardIsFilled.next(false)
+      }
+    })
+
+    this.swimmerRegistrationCardForm.get('result').valueChanges.subscribe(val => {
      // შემოწმება. თუ მომხმარებელი შლის შედეგს მაშინ აღარ დაემატება : და  . 
       if(this.lastValueLength > val.length && val.length == 2 ||this.lastValueLength > val.length && val.length == 5 ){
        console.log('არ დაემატა იმიტომ რომ შლიდა')
       } else {
         if(val.length == 2) {
-          this.swimmerRegistrationForm.patchValue({
+          this.swimmerRegistrationCardForm.patchValue({
             'result': val + ':'
           })
       }
       if(val.length == 5) {
-        this.swimmerRegistrationForm.patchValue({
+        this.swimmerRegistrationCardForm.patchValue({
           'result': val + '.'
         })
       }
@@ -92,7 +132,7 @@ export class SwimmerCardComponent {
     })
 
     if(this.result) {
-       this.swimmerRegistrationForm.setValue({
+       this.swimmerRegistrationCardForm.setValue({
       'age': this.age,
       'club':this.club,
       'result': this.result,
@@ -105,7 +145,7 @@ export class SwimmerCardComponent {
       'bestResultCompDate':this.bestResultCompDate,
     })
     } else if(!this.result && this.age) {
-      this.swimmerRegistrationForm.patchValue({
+      this.swimmerRegistrationCardForm.patchValue({
         'age': this.age,
         'club':this.club,
         'gender': selectGender,
@@ -116,7 +156,7 @@ export class SwimmerCardComponent {
       })
     }
      else {
-      this.swimmerRegistrationForm.patchValue({
+      this.swimmerRegistrationCardForm.patchValue({
         'lastname': this.lastname,
         'name': this.name,
         'distance': this.distance,
@@ -126,22 +166,24 @@ export class SwimmerCardComponent {
    
   }
 
-  clickedOutside() {
-    if(this.swimmerRegistrationForm.status == 'INVALID') {
-      alert('გთხოვთ შეავსოთ ბარათი ბოლომდე')
-      this.CardOutsideClick = true;
-    }
-  }
+  // clickedOutside() {
+  //   if(this.swimmerRegistrationCardForm.status == 'INVALID') {
+  //     alert('გთხოვთ შეავსოთ ბარათი ბოლომდე')
+  //     this.CardOutsideClick = true;
+  //   }
+  // }
 
   deleteCard(){
-    this._resultsService.deleteCards.next(this.swimmerRegistrationForm.value)
+    this._resultsService.deleteCards.next(this.cardId)
+    this._resultsService.IfCardIsFilled.next(true)
+    this._resultsService.errorsOn.next(false)
   }
 
   onSubmit() {
-    if (this.swimmerRegistrationForm.status == 'INVALID') {
+    if (this.swimmerRegistrationCardForm.status == 'INVALID') {
       alert('გთხოვთ შეავსოთ ყველა საჭირო გრაფა')
     } else {
-      console.log(this.swimmerRegistrationForm.value)
+      console.log(this.swimmerRegistrationCardForm.value)
     }
   }
 }

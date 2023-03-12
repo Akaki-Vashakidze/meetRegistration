@@ -1,9 +1,9 @@
-<div class="card" appClickedOutside (clickedOutside)="clickedOutside()">
+<div class="card">
     <div class="header">
         <div>შეჯიბრის დასახელება:</div>
         <div>{{compName}}</div>
     </div>
-    <form [formGroup]="swimmerRegistrationForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="swimmerRegistrationCardForm" (ngSubmit)="onSubmit()">
         <mat-form-field appearance="fill">
             <mat-label>დისტანცია</mat-label>
             <mat-select formControlName="distance">
@@ -24,7 +24,7 @@
             <mat-label for="lastname">გვარი:</mat-label>
             <input matInput type="text" id="lastname" formControlName="lastname" class="form-control">
             <mat-hint style="color:red;"
-                *ngIf="swimmerRegistrationForm.get('lastname')?.touched  && swimmerRegistrationForm.get('lastname')?.errors?.['required']">
+                *ngIf="swimmerRegistrationCardForm.get('lastname')?.touched  && swimmerRegistrationCardForm.get('lastname')?.errors?.['required']">
                 გვარის შეყვანა აუცილებელია
             </mat-hint>
         </mat-form-field>
@@ -32,7 +32,7 @@
             <mat-label for="name">სახელი:</mat-label>
             <input matInput type="name" id="name" formControlName="name" class="form-control">
             <mat-hint style="color:red;"
-                *ngIf="swimmerRegistrationForm.get('name')?.touched  && swimmerRegistrationForm.get('name')?.errors?.['required']">
+                *ngIf="swimmerRegistrationCardForm.get('name')?.touched  && swimmerRegistrationCardForm.get('name')?.errors?.['required']">
                 სახელის შეყვანა აუცილებელია
             </mat-hint>
         </mat-form-field>
@@ -40,23 +40,33 @@
             <mat-label for="age">დაბ.წელი:</mat-label>
             <input matInput type="age" id="age" formControlName="age" class="form-control">
             <mat-hint style="color:red;"
-                *ngIf=" CardOutsideClick && swimmerRegistrationForm.get('age')?.errors?.['required'] || swimmerRegistrationForm.get('age')?.touched  && swimmerRegistrationForm.get('age')?.errors?.['required']">
+                *ngIf="errorsOn &&  swimmerRegistrationCardForm.get('age')?.errors?.['required'] || swimmerRegistrationCardForm.get('age')?.touched  && swimmerRegistrationCardForm.get('age')?.errors?.['required']">
                 დაბ.წელის შეყვანა აუცილებელია
             </mat-hint>
             <mat-hint style="color:red;"
-                *ngIf=" CardOutsideClick && swimmerRegistrationForm.get('age')?.errors?.['oldGuyError'] || swimmerRegistrationForm.get('age')?.touched  && swimmerRegistrationForm.get('age')?.errors?.['oldGuyError']">
+                *ngIf="errorsOn &&  swimmerRegistrationCardForm.get('age')?.errors?.['oldGuyError'] || swimmerRegistrationCardForm.get('age')?.touched  && swimmerRegistrationCardForm.get('age')?.errors?.['oldGuyError']">
                 ამხელა კაცს სტარტზე-ჰოპს ვერ ვაკადრებ მეგობარო!
             </mat-hint>
             <mat-hint style="color:red;"
-                *ngIf=" CardOutsideClick && swimmerRegistrationForm.get('age')?.errors?.['childError'] || swimmerRegistrationForm.get('age')?.touched  && swimmerRegistrationForm.get('age')?.errors?.['childError']">
+                *ngIf="errorsOn &&  swimmerRegistrationCardForm.get('age')?.errors?.['childError'] || swimmerRegistrationCardForm.get('age')?.touched  && swimmerRegistrationCardForm.get('age')?.errors?.['childError']">
                 ცოტა წამოიზარდოს და თავიდან სცადეთ!
             </mat-hint>
         </mat-form-field>
+
         <mat-form-field class="form-group">
             <mat-label for="club">კლუბი</mat-label>
-            <input matInput type="club" id="club" formControlName="club" class="form-control">
+            <input [matAutocomplete]="kkk" matInput type="club" id="club" formControlName="club" class="form-control">
+            <!-- პრობლემა: ამას აღიქვამს როგორც გარეთ დაკლიკებას და ალერთს აგდებს -->
+                <mat-autocomplete #kkk="matAutocomplete">
+                            <mat-option (click)="fun" *ngFor="let item of CLUBnames" [value]="item.name">
+                                {{item.name}}
+                            </mat-option>
+                 </mat-autocomplete>
+          
+            
+
             <mat-hint style="color:red;"
-                *ngIf=" CardOutsideClick &&  swimmerRegistrationForm.get('club')?.errors?.['required'] || swimmerRegistrationForm.get('club')?.touched  && swimmerRegistrationForm.get('club')?.errors?.['required']">
+                *ngIf="errorsOn &&   swimmerRegistrationCardForm.get('club')?.errors?.['required'] || swimmerRegistrationCardForm.get('club')?.touched  && swimmerRegistrationCardForm.get('club')?.errors?.['required']">
                 კლუბის შეყვანა აუცილებელია
             </mat-hint>
         </mat-form-field>
@@ -66,7 +76,7 @@
             <mat-radio-button value="male">კაცი</mat-radio-button>
             <mat-radio-button value="female">ქალი</mat-radio-button>
             <mat-hint style="color:red;"
-            *ngIf=" CardOutsideClick &&  swimmerRegistrationForm.get('gender')?.errors?.['required'] ||swimmerRegistrationForm.get('gender')?.touched  && swimmerRegistrationForm.get('gender')?.errors?.['required']">
+            *ngIf="errorsOn &&   swimmerRegistrationCardForm.get('gender')?.errors?.['required'] ||swimmerRegistrationCardForm.get('gender')?.touched  && swimmerRegistrationCardForm.get('gender')?.errors?.['required']">
             სქესის არჩევა აუცილებელია
         </mat-hint>
         </mat-radio-group>
@@ -77,19 +87,19 @@
             <input matInput type="result" id="result" placeholder="01:01.01" formControlName="result"
                 class="form-control">
             <mat-hint style="color:red;"
-                *ngIf="CardOutsideClick && swimmerRegistrationForm.get('result')?.errors?.['required'] || swimmerRegistrationForm.get('result')?.touched  && swimmerRegistrationForm.get('result')?.errors?.['required']">
+                *ngIf=" errorsOn && swimmerRegistrationCardForm.get('result')?.errors?.['required'] || swimmerRegistrationCardForm.get('result')?.touched  && swimmerRegistrationCardForm.get('result')?.errors?.['required']">
                 შედეგის შეყვანა აუცილებელია
             </mat-hint>
             <mat-hint style="color:red;"
-                *ngIf="CardOutsideClick && swimmerRegistrationForm.get('result')?.errors?.['minlength'] || swimmerRegistrationForm.get('result')?.touched  && swimmerRegistrationForm.get('result')?.errors?.['minlength']">
+                *ngIf=" errorsOn && swimmerRegistrationCardForm.get('result')?.errors?.['minlength'] || swimmerRegistrationCardForm.get('result')?.touched  && swimmerRegistrationCardForm.get('result')?.errors?.['minlength']">
                 შეყვანილი შედეგის ფორმატი არასწორია. სწორი ფორმატი - 01:01.01
             </mat-hint>
             <mat-hint style="color:red;"
-                *ngIf="CardOutsideClick && swimmerRegistrationForm.get('result')?.errors?.['maxlength'] || swimmerRegistrationForm.get('result')?.touched  && swimmerRegistrationForm.get('result')?.errors?.['maxlength']">
+                *ngIf=" errorsOn && swimmerRegistrationCardForm.get('result')?.errors?.['maxlength'] || swimmerRegistrationCardForm.get('result')?.touched  && swimmerRegistrationCardForm.get('result')?.errors?.['maxlength']">
                 შეყვანილი შედეგის ფორმატი არასწორია. სწორი ფორმატი - 01:01.01
             </mat-hint>
             <mat-hint style="color:red;"
-            *ngIf="CardOutsideClick && swimmerRegistrationForm.get('result')?.errors?.['twoDotsError'] || swimmerRegistrationForm.get('result')?.touched  && swimmerRegistrationForm.get('result')?.errors?.['twoDotsError']">
+            *ngIf=" errorsOn && swimmerRegistrationCardForm.get('result')?.errors?.['twoDotsError'] || swimmerRegistrationCardForm.get('result')?.touched  && swimmerRegistrationCardForm.get('result')?.errors?.['twoDotsError']">
                შეყვანილი შედეგის ფორმატი არასწორია. სწორი ფორმატი - 01:01.01
         </mat-hint>
         </mat-form-field>
@@ -109,5 +119,5 @@
         </div>
     </form>
     <button mat-raised-button color="warn" type="button" (click)="deleteCard()" class="delete">ბარათის
-        წაშლა</button>
+        წაშლა </button>
 </div>

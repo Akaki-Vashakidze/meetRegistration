@@ -22,6 +22,7 @@ import { ClickedOutsideDirective } from './directives/clicked-outside.directive'
 import { ErrorComponent } from './components/error/error.component';
 import { CompetitionsListComponent } from './components/competitions-list/competitions-list.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,

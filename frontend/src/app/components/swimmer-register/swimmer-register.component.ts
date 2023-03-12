@@ -27,6 +27,7 @@ export class SwimmerRegisterComponent implements OnDestroy, OnInit {
     { value: 'ბატერფლაი' }, { value: 'გულაღმა ცურვა' }, { value: 'ბრასი' }, { value: 'თავისუფალი ყაიდა' }, { value: 'კომპლექსი' }
   ]
   sidenavSubscribe: Subscription;
+  ifCardIsFilledSub:Subscription;
   Cards: any = []
   constructor(private _route: ActivatedRoute, private _router: Router, private _authService: AuthService, private _resultsService: ResultsService, private router: Router) { }
   opened: boolean;
@@ -36,10 +37,12 @@ export class SwimmerRegisterComponent implements OnDestroy, OnInit {
   names: string[];
   changeValueSubscription: Subscription;
   deleteCardSubscription: Subscription;
+  clubNames = [];
   swimmer = {
     name: '',
     lastname: ''
   }
+  CardIsFilled = false;
 
 
   shortenName(style) {
@@ -58,12 +61,26 @@ export class SwimmerRegisterComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
+
+   this.ifCardIsFilledSub = this._resultsService.IfCardIsFilled.subscribe(item => {
+      this.CardIsFilled = item;
+    })
+
+    this._resultsService.getClubs().subscribe(
+      res => {
+        this.clubNames = res;
+        console.log(this.clubNames)
+      },
+      err => {
+        console.log(err)
+      }
+    )
     this.compName = this._route.snapshot.params['compName']
     this.compDate = this._route.snapshot.params['compDate']
     this.poolSize = this._route.snapshot.params['poolSize']
-    this.deleteCardSubscription = this._resultsService.deleteCards.subscribe(item => {
+    this.deleteCardSubscription = this._resultsService.deleteCards.subscribe(id => {
       for (let i = 0; i < this.Cards.length; i++) {
-        if (this.Cards[i].name == item.name && this.Cards[i].lastname == item.lastname && this.Cards[i].age == item.age && this.Cards[i].distance == item.distance && this.Cards[i].style == item.style) {
+        if (this.Cards[i].id == id) {
           this.Cards.splice(i, 1)
         }
       }
@@ -103,6 +120,7 @@ export class SwimmerRegisterComponent implements OnDestroy, OnInit {
       if (this.swimmerRegistrationForm.value.lastname.split(' ')[1]) {
         this.swimmer.name = this.swimmerRegistrationForm.value.lastname.split(' ')[1]
         this.swimmer.lastname = this.swimmerRegistrationForm.value.lastname.split(' ')[0]
+        console.log('happens')
         this.swimmerRegistrationForm.patchValue({
           'lastname': this.swimmer.lastname,
           'name': this.swimmer.name
@@ -111,10 +129,12 @@ export class SwimmerRegisterComponent implements OnDestroy, OnInit {
     }
   }
 
+
   ngOnDestroy(): void {
     this.sidenavSubscribe.unsubscribe()
     this.changeValueSubscription.unsubscribe()
     this.deleteCardSubscription.unsubscribe()
+    this.ifCardIsFilledSub.unsubscribe()
   }
 
   registerSwimmers() {
@@ -138,33 +158,39 @@ export class SwimmerRegisterComponent implements OnDestroy, OnInit {
     if (this.swimmerRegistrationForm.status == 'INVALID') {
       alert('გთხოვთ შეავსოთ ყველა საჭირო გრაფა')
     } else {
-      let FormValue = this.swimmerRegistrationForm.value
-      let foundOne = this.Cards.find(item => {
-        return item.distance == FormValue.distance && item.style == FormValue.style && item.name == FormValue.name && item.lastname == FormValue.lastname;
-      })
-      if (!foundOne) {
-        this.loading = true;
-        let compInfo = {
-          name: this.compName,
-          date: this.compDate
+      if (this.CardIsFilled) {
+        let FormValue = this.swimmerRegistrationForm.value
+        let foundOne = this.Cards.find(item => {
+          return item.distance == FormValue.distance && item.style == FormValue.style && item.name == FormValue.name && item.lastname == FormValue.lastname;
+        })
+        if (!foundOne) {
+          this.loading = true;
+          let compInfo = {
+            name: this.compName,
+            date: this.compDate
+          }
+          this.info = { ...FormValue, poolSize: this.poolSize + 'მ', compInfo: compInfo }
+          this._resultsService.getSwimmerCardInfo(this.info)
+            .subscribe(
+              async res => {
+                console.log(res)
+                this.loading = false;
+                let newCardInfo = { ...res, ...this.info, id:Math.random() }
+                this.Cards.push(newCardInfo)
+              },
+              err => {
+                this.loading = false;
+                let newCardInfo = { ...this.info, id:Math.random() }
+                this.Cards.push(newCardInfo)
+              })
+        } else {
+          alert('ასეთი ბარათი უკვე არსებობს')
         }
-        this.info = { ...FormValue, poolSize: this.poolSize + 'მ', compInfo: compInfo }
-        this._resultsService.getSwimmerCardInfo(this.info)
-          .subscribe(
-            async res => {
-              console.log(res)
-              this.loading = false;
-              let newCardInfo = { ...res, ...this.info }
-              this.Cards.push(newCardInfo)
-            },
-            err => {
-              this.loading = false;
-              let newCardInfo = { ...this.info }
-              this.Cards.push(newCardInfo)
-            })
       } else {
-        alert('ასეთი ბარათი უკვე არსებობს')
+        this._resultsService.errorsOn.next(true)
+        alert('გთხოვთ დაასრულოთ წინა ბარათის შევსება და შემდეგ დაამატოთ ახალი!')
       }
+
     }
   }
 }

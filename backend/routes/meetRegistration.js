@@ -5,6 +5,8 @@ const meetRegistrationConrollers = require('../controllers/meetRegistration')
 
 router.post('/swimmerCardInfo', meetRegistrationConrollers.getSwimmerCardInfo)
 
+router.get('/clubs', meetRegistrationConrollers.getClubs)
+
 router.post('/registerSwimmers',verifyToken, meetRegistrationConrollers.registerSwimmers)
 
 router.get('/names', verifyToken, meetRegistrationConrollers.getNames)

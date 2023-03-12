@@ -8,4 +8,5 @@ export const environment = {
     eventResultsURL:'http://localhost:3500/results/eventResults',
     swimmerCardInfoURL:'http://localhost:3500/meetRegistration/swimmerCardInfo',
     registerSwimmersURL:'http://localhost:3500/meetRegistration/registerSwimmers',
+    clubsURL:'http://localhost:3500/meetRegistration/clubs',
 };

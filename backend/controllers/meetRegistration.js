@@ -2,6 +2,7 @@
 const Results = require('../models/results')
 const RegistrationInfo = require('../models/registeredSwimmers')
 const CompResults = require('../models/compResults')
+const Clubs = require('../models/clubs')
 
 exports.registerSwimmers = async (req,res) => {
     try {
@@ -14,6 +15,18 @@ exports.registerSwimmers = async (req,res) => {
     }
     catch {
          res.status(500).send("something went wrong")
+    }
+}
+
+exports.getClubs = async (req,res) => {
+    try {
+        Clubs.find()
+        .then(item => {
+            res.send(item)
+        })
+    }
+    catch {
+        res.status(500).send("something went wrong")
     }
 }
 

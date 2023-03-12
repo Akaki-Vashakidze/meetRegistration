@@ -8,12 +8,18 @@ import { environment } from 'src/environments/environment.development';
 })
 export class ResultsService {
 
-  deleteCards = new BehaviorSubject<any>({})
+  deleteCards = new BehaviorSubject<any>('')
+  IfCardIsFilled = new BehaviorSubject<any>(true)
+  errorsOn = new BehaviorSubject<any>(false)
 
   constructor(private _http:HttpClient) { }
 
   registerSwimmers(Cards:any){
    return this._http.post<any>(environment.registerSwimmersURL,Cards)
+  }
+
+  getClubs() {
+    return this._http.get<any>(environment.clubsURL)
   }
 
   getResults(){
