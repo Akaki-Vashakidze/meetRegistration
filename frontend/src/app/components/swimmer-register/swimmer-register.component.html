@@ -22,10 +22,10 @@
                 </mat-form-field>
 
                 <mat-form-field class="form-group">
-                    <mat-label for="lastname">გვარი:</mat-label>
+                    <mat-label >გვარი:</mat-label>
 
                     <input appClickedOutside (clickedOutside)="clickedOutside()" matInput type="text"
-                        [matAutocomplete]="auto" id="lastname" formControlName="lastname" class="form-control">
+                        [matAutocomplete]="auto" formControlName="lastname" class="form-control">
 
                     <mat-autocomplete #auto="matAutocomplete">
                         <mat-option (click)="fun" *ngFor="let name of names" [value]="name">
@@ -40,8 +40,8 @@
                 </mat-form-field>
 
                 <mat-form-field class="form-group">
-                    <mat-label for="name">სახელი:</mat-label>
-                    <input matInput type="name" id="name" formControlName="name" class="form-control">
+                    <mat-label >სახელი:</mat-label>
+                    <input matInput type="text" formControlName="name" class="form-control">
                     <mat-hint style="color:red;"
                         *ngIf="swimmerRegistrationForm.get('name')?.touched  && swimmerRegistrationForm.get('name')?.errors?.['required']">
                         სახელის შეყვანა აუცილებელია

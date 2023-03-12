@@ -21,24 +21,24 @@
             </mat-select>
         </mat-form-field>
         <mat-form-field class="form-group">
-            <mat-label for="lastname">გვარი:</mat-label>
-            <input matInput type="text" id="lastname" formControlName="lastname" class="form-control">
+            <mat-label >გვარი:</mat-label>
+            <input type="text" matInput formControlName="lastname" class="form-control">
             <mat-hint style="color:red;"
                 *ngIf="swimmerRegistrationCardForm.get('lastname')?.touched  && swimmerRegistrationCardForm.get('lastname')?.errors?.['required']">
                 გვარის შეყვანა აუცილებელია
             </mat-hint>
         </mat-form-field>
         <mat-form-field class="form-group">
-            <mat-label for="name">სახელი:</mat-label>
-            <input matInput type="name" id="name" formControlName="name" class="form-control">
+            <mat-label >სახელი:</mat-label>
+            <input type="text" matInput formControlName="name" class="form-control">
             <mat-hint style="color:red;"
                 *ngIf="swimmerRegistrationCardForm.get('name')?.touched  && swimmerRegistrationCardForm.get('name')?.errors?.['required']">
                 სახელის შეყვანა აუცილებელია
             </mat-hint>
         </mat-form-field>
         <mat-form-field class="form-group">
-            <mat-label for="age">დაბ.წელი:</mat-label>
-            <input matInput type="age" id="age" formControlName="age" class="form-control">
+            <mat-label >დაბ.წელი:</mat-label>
+            <input type="text" matInput formControlName="age" class="form-control">
             <mat-hint style="color:red;"
                 *ngIf="errorsOn &&  swimmerRegistrationCardForm.get('age')?.errors?.['required'] || swimmerRegistrationCardForm.get('age')?.touched  && swimmerRegistrationCardForm.get('age')?.errors?.['required']">
                 დაბ.წელის შეყვანა აუცილებელია
@@ -55,8 +55,7 @@
 
         <mat-form-field class="form-group">
             <mat-label for="club">კლუბი</mat-label>
-            <input [matAutocomplete]="kkk" matInput type="club" id="club" formControlName="club" class="form-control">
-            <!-- პრობლემა: ამას აღიქვამს როგორც გარეთ დაკლიკებას და ალერთს აგდებს -->
+            <input type="text" [matAutocomplete]="kkk" matInput formControlName="club" class="form-control">
                 <mat-autocomplete #kkk="matAutocomplete">
                             <mat-option (click)="fun" *ngFor="let item of CLUBnames" [value]="item.name">
                                 {{item.name}}
@@ -72,7 +71,7 @@
         </mat-form-field>
 
         <mat-radio-group formControlName="gender">
-            <mat-label for="">სქესი:</mat-label>
+            <mat-label >სქესი:</mat-label>
             <mat-radio-button value="male">კაცი</mat-radio-button>
             <mat-radio-button value="female">ქალი</mat-radio-button>
             <mat-hint style="color:red;"
@@ -83,8 +82,8 @@
        
 
         <mat-form-field class="form-group">
-            <mat-label for="result">შედეგი:</mat-label>
-            <input matInput type="result" id="result" placeholder="01:01.01" formControlName="result"
+            <mat-label >შედეგი:</mat-label>
+            <input type="text" matInput type="text" placeholder="01:01.01" formControlName="result"
                 class="form-control">
             <mat-hint style="color:red;"
                 *ngIf=" errorsOn && swimmerRegistrationCardForm.get('result')?.errors?.['required'] || swimmerRegistrationCardForm.get('result')?.touched  && swimmerRegistrationCardForm.get('result')?.errors?.['required']">
@@ -106,13 +105,13 @@
 
         <mat-form-field *ngIf="bestResultCompName" class="form-group">
             <mat-label for="bestResultCompName">შეჯიბრი:</mat-label>
-            <input matInput type="bestResultCompName" id="bestResultCompName" formControlName="bestResultCompName"
+            <input type="text" matInput formControlName="bestResultCompName"
                 class="form-control">
         </mat-form-field>
 
         <mat-form-field *ngIf="bestResultCompDate" class="form-group">
-            <mat-label for="bestResultCompDate">რიცხვი:</mat-label>
-            <input matInput type="bestResultCompDate" id="bestResultCompDate" formControlName="bestResultCompDate"
+            <mat-label >რიცხვი:</mat-label>
+            <input type="text" matInput formControlName="bestResultCompDate"
                 class="form-control">
         </mat-form-field>
         <div>

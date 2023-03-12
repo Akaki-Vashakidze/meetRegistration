@@ -92,13 +92,10 @@ export class SwimmerCardComponent implements OnDestroy,OnInit {
     this.swimmerRegistrationCardForm.get('club').valueChanges.subscribe(val => {
       console.log(val)
       console.log(this.clubNames)
-      if(val.length > 0) {
       this.CLUBnames = this.clubNames.filter(item => {
           console.log(item.name)
           return item.name.includes(val)
         })
-      }
-      console.log(this.CLUBnames)
     })
 
     this.swimmerRegistrationCardForm.valueChanges.subscribe(val => {
