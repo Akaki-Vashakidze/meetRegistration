@@ -69,7 +69,6 @@ export class SwimmerRegisterComponent implements OnDestroy, OnInit {
     this._resultsService.getClubs().subscribe(
       res => {
         this.clubNames = res;
-        console.log(this.clubNames)
       },
       err => {
         console.log(err)
@@ -138,6 +137,7 @@ export class SwimmerRegisterComponent implements OnDestroy, OnInit {
   }
 
   registerSwimmers() {
+    if (this.CardIsFilled) {
     let info = {
       user: localStorage.getItem('user'),
       cards: this.Cards
@@ -152,6 +152,10 @@ export class SwimmerRegisterComponent implements OnDestroy, OnInit {
           console.log(err)
         }
       )
+    } else {
+      this._resultsService.errorsOn.next(true)
+      alert('გთხოვთ დაასრულოთ ბარათის შევსება')
+    }
   }
 
   onSubmit() {

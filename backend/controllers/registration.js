@@ -56,7 +56,8 @@ exports.registration = async (req, res) => {
                                 email: registeredUser.email,
                                 name: registeredUser.name,
                                 lastname: registeredUser.lastname,
-                                number:registeredUser.number
+                                number:registeredUser.number,
+                                id:registeredUser._id
                             }
                         })
                     })

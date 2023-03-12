@@ -90,10 +90,7 @@ export class SwimmerCardComponent implements OnDestroy,OnInit {
     this.gender == 'კაცები' ? selectGender = 'male' : selectGender = 'female';
 
     this.swimmerRegistrationCardForm.get('club').valueChanges.subscribe(val => {
-      console.log(val)
-      console.log(this.clubNames)
       this.CLUBnames = this.clubNames.filter(item => {
-          console.log(item.name)
           return item.name.includes(val)
         })
     })

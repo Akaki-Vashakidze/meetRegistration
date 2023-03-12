@@ -15,6 +15,9 @@
         <mat-hint style="color:red;" *ngIf="loginForm.get('password')?.touched  && loginForm.get('password')?.errors?.['required']">
            პაროლის შეყვანა აუცილებელია
           </mat-hint> 
+          <mat-hint style="color:red;" *ngIf="loginForm.get('password')?.touched  && loginForm.get('password')?.errors?.['minlength']">
+            პაროლი უნდა იყოს მინიმუმ 8 სიმბოლო
+           </mat-hint> 
     </mat-form-field>
 
     <button type="submit" mat-raised-button style="width:200px">სისტემაში შესვლა</button>

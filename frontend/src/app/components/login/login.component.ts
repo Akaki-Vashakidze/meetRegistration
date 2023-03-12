@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.loginForm = new FormGroup({
       'email': new FormControl(null, [Validators.required, Validators.email]),
-      'password': new FormControl(null, Validators.required)
+      'password': new FormControl(null, [Validators.required,Validators.minLength(8)])
     })
   }
 
@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit {
             this.loading=false;
             this.slowInternet = false;
            localStorage.setItem('token',res.token)
-           localStorage.setItem('user',res.user.name + ' ' + res.user.lastname  + ' ' + res.user.email + ' ' + res.user.number)
+           localStorage.setItem('user',res.user.name + ' ' + res.user.lastname  + ' ' + res.user.email + ' ' + res.user.number + ' ' + res.user.id)
            this._authService.SignedIn.next(true)
            this.router.navigate(['/results'])
           },
