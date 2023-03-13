@@ -51,7 +51,6 @@ export class LoginComponent implements OnInit {
           err => { 
             // this._authService.errorItem.next('login Error')
             this.loading = false;
-            console.log(err.error) 
             if(err.error == 'invalid email') {
               alert('მეილი არასწორია')
             }

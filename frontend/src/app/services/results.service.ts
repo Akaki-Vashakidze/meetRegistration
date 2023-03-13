@@ -14,6 +14,10 @@ export class ResultsService {
 
   constructor(private _http:HttpClient) { }
 
+  getComps () {
+    return this._http.get<any>(environment.compsURL)
+  }
+
   registerSwimmers(Cards:any){
    return this._http.post<any>(environment.registerSwimmersURL,Cards)
   }

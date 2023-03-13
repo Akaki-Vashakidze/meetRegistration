@@ -59,7 +59,6 @@ export class RegistrationComponent implements OnInit{
             this.router.navigate(['/results'])
           },
           err => { 
-            console.log(err) 
             if(err.error == 'acCode ი არასწორია') {
               alert('აქტივაციის კოდი არასწორია')
             }

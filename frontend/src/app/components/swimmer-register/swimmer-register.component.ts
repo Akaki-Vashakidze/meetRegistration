@@ -119,7 +119,6 @@ export class SwimmerRegisterComponent implements OnDestroy, OnInit {
       if (this.swimmerRegistrationForm.value.lastname.split(' ')[1]) {
         this.swimmer.name = this.swimmerRegistrationForm.value.lastname.split(' ')[1]
         this.swimmer.lastname = this.swimmerRegistrationForm.value.lastname.split(' ')[0]
-        console.log('happens')
         this.swimmerRegistrationForm.patchValue({
           'lastname': this.swimmer.lastname,
           'name': this.swimmer.name
@@ -177,7 +176,6 @@ export class SwimmerRegisterComponent implements OnDestroy, OnInit {
           this._resultsService.getSwimmerCardInfo(this.info)
             .subscribe(
               async res => {
-                console.log(res)
                 this.loading = false;
                 let newCardInfo = { ...res, ...this.info, id:Math.random() }
                 this.Cards.push(newCardInfo)

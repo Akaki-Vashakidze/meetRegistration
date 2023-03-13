@@ -11,6 +11,8 @@ router.post('/registerSwimmers',verifyToken, meetRegistrationConrollers.register
 
 router.get('/names', verifyToken, meetRegistrationConrollers.getNames)
 
+router.get('/newComps', meetRegistrationConrollers.getNewCompsInfo)
+
 function verifyToken(req, res, next) {
     if (!req.headers.authorization) {
         return res.status(401).send('Unauthorized request')
