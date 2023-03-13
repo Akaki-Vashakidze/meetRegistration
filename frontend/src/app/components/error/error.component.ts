@@ -16,8 +16,8 @@ export class ErrorComponent implements OnInit, OnDestroy {
    this.errorSubscription.unsubscribe()
   }
   ngOnInit(): void {
-   this.errorSubscription = this._authService.errorItem.subscribe(item => {
-      this.errorItem = item;
-    })
+  //  this.errorSubscription = this._authService.errorItem.subscribe(item => {
+  //     this.errorItem = item;
+  //   })
   }
 }

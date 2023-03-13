@@ -1,4 +1,56 @@
-<div class="competitions">
+<!-- <div class="competitions">
     <h1>შეჯიბრები</h1>
     <h3 *ngFor="let comp of competitions" (click)="registerInCompetition(comp)"><a>{{comp.name}}</a></h3>
-</div>
+</div> -->
+
+<div class="table">
+    <h1>შეჯიბრების ცხრილი</h1>
+    <table mat-table [dataSource]="dataSource" matSort>
+      
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">
+          <strong>სახელი</strong>
+        </th>
+        <td mat-cell *matCellDef="let info">{{info.name}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="poolSize">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">
+          <strong>აუზის სიგრძე</strong>
+        </th>
+        <td mat-cell *matCellDef="let info">{{info.poolSize}}მ</td>
+      </ng-container>
+    
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by weight">
+         <strong>თარიღი</strong>
+        </th>
+        <td mat-cell *matCellDef="let info">{{info.startDate}}</td>
+      </ng-container>
+    
+      <ng-container matColumnDef="deadline">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by symbol">
+         <strong>რეგისტრაციის ბოლო ვადა</strong>
+        </th>
+        <td mat-cell *matCellDef="let info">{{info.deadline}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="regisration">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by symbol">
+         <strong>რეგისტრაცია</strong>
+        </th>
+        <td mat-cell *matCellDef="let info"><a (click)="registerInCompetition(info)">რეგისტრაცია</a></td>
+      </ng-container>
+
+      <ng-container matColumnDef="timeLeft">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by symbol">
+         <strong>დარჩა</strong>
+        </th>
+        <td mat-cell *matCellDef="let info">{{info.timeLeft}}</td>
+      </ng-container>
+    
+      <tr mat-header-row *matHeaderRowDef="columns"></tr>
+      <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+    
+    </table>
+    </div>

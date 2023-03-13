@@ -58,7 +58,12 @@ export class RegistrationComponent implements OnInit{
             this._authService.SignedIn.next(true)
             this.router.navigate(['/results'])
           },
-          err => { console.log(err) }
+          err => { 
+            console.log(err) 
+            if(err.error == 'acCode ი არასწორია') {
+              alert('აქტივაციის კოდი არასწორია')
+            }
+          }
         )
       }
       else {

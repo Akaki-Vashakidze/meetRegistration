@@ -24,14 +24,14 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
 
-      setTimeout(() => {
-      if(this.loading == true) {
-        this.slowInternet = true;
-        this._authService.errorItem.next('slow Internet (Login), please check internet connection and tru again!')
-        this.loading = false;
-         alert('slow internet problem (Login), check internet connection and try again')
-        }
-    }, 5000);
+    //   setTimeout(() => {
+    //   if(this.loading == true) {
+    //     this.slowInternet = true;
+    //     // this._authService.errorItem.next('slow Internet (Login), please check internet connection and tru again!')
+    //     this.loading = false;
+    //      alert('slow internet problem (Login), check internet connection and try again')
+    //     }
+    // }, 5000);
 
 
     this.loading = true;
@@ -49,8 +49,15 @@ export class LoginComponent implements OnInit {
            this.router.navigate(['/results'])
           },
           err => { 
-            this._authService.errorItem.next('login Error')
-            console.log(err) 
+            // this._authService.errorItem.next('login Error')
+            this.loading = false;
+            console.log(err.error) 
+            if(err.error == 'invalid email') {
+              alert('მეილი არასწორია')
+            }
+            if(err.error == 'invalid password') {
+              alert('პაროლი არასწორია')
+            }
           }
         )
     }

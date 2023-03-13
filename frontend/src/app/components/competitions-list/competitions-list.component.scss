@@ -5,6 +5,19 @@
   transform: translate(-50%,0);
 }
 
+table {
+  width: 100%;
+}
+
+.table {
+  position: relative;
+  top: 10%;
+  left: 10%;
+width: 80%;
+box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+text-align: center;
+}
+
 h1 {
     text-align: center;
 }

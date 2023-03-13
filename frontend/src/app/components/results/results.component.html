@@ -7,28 +7,28 @@
     
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">
-          შეჯიბრის დასახელება
+          <strong>შეჯიბრის დასახელება</strong>
         </th>
         <td mat-cell *matCellDef="let info"> {{info.meetName}} </td>
       </ng-container>
     
       <ng-container matColumnDef="date">
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">
-          თარიღი
+          <strong>თარიღი</strong>
         </th>
         <td mat-cell *matCellDef="let info"> {{info.date}} </td>
       </ng-container>
     
       <ng-container matColumnDef="course">
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by weight">
-          აუზის სიგრძე
+          <strong>აუზის სიგრძე</strong>
         </th>
         <td mat-cell *matCellDef="let info"> {{info.course}} </td>
       </ng-container>
     
       <ng-container matColumnDef="results">
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by symbol">
-          შედეგები
+          <strong>შედეგები</strong>
         </th>
         <td mat-cell *matCellDef="let info"><a (click)="seeResults(info)" >შედეგები</a></td>
       </ng-container>

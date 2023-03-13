@@ -27,7 +27,7 @@ export class ResultsComponent implements OnInit{
    slowIntTimeout = setTimeout(() => {
     if(this.loading == true) {
     this.slowInternet = true;
-    this._authService.errorItem.next('slow Internet (results), please check internet connection and tru again!')
+    // this._authService.errorItem.next('slow Internet (results), please check internet connection and tru again!')
     this.loading = false;
      alert('slow internet problem (results), check internet connection and try again')
     }
