@@ -10,4 +10,5 @@ export const environment = {
     registerSwimmersURL:'http://localhost:3500/meetRegistration/registerSwimmers',
     clubsURL:'http://localhost:3500/meetRegistration/clubs',
     compsURL:'http://localhost:3500/meetRegistration/newComps',
+    doubleRegURL:'http://localhost:3500/meetRegistration/checkDoubleCompReg',
 };

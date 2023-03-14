@@ -13,6 +13,8 @@ router.get('/names', verifyToken, meetRegistrationConrollers.getNames)
 
 router.get('/newComps', meetRegistrationConrollers.getNewCompsInfo)
 
+router.post('/checkDoubleCompReg', meetRegistrationConrollers.checkDoubleCompReg)
+
 function verifyToken(req, res, next) {
     if (!req.headers.authorization) {
         return res.status(401).send('Unauthorized request')

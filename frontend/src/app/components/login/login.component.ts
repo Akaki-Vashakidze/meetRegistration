@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit {
             this.loading=false;
             this.slowInternet = false;
            localStorage.setItem('token',res.token)
-           localStorage.setItem('user',res.user.name + ' ' + res.user.lastname  + ' ' + res.user.email + ' ' + res.user.number + ' ' + res.user.id)
+           localStorage.setItem('user',res.user.name + '/' + res.user.lastname  + '/' + res.user.email + '/' + res.user.number + '/' + res.user.id)
            this._authService.SignedIn.next(true)
            this.router.navigate(['/results'])
           },

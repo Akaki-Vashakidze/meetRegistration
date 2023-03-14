@@ -18,6 +18,10 @@ export class ResultsService {
     return this._http.get<any>(environment.compsURL)
   }
 
+  checkDoubleCompRegistration(userID:string,compID:string) {
+    return this._http.post<any>(environment.doubleRegURL,{userID,compID})
+  }
+
   registerSwimmers(Cards:any){
    return this._http.post<any>(environment.registerSwimmersURL,Cards)
   }

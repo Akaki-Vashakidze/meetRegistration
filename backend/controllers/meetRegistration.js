@@ -20,9 +20,26 @@ exports.registerSwimmers = async (req,res) => {
     }
 }
 
+exports.checkDoubleCompReg = async (req,res) => {
+    try {
+        RegistrationInfo.find().then(item => {
+            let founfMatch = item.find(obj => {
+                return obj.user == req.body.userID && obj.compID == req.body.compID
+            })
+            if(founfMatch) {
+                res.send({doubleReg:true,founfMatch})
+            } else {
+                res.send({doubleReg:false})
+            }
+        })
+    }
+    catch {
+        res.status(500).send("something went wrong")
+   }
+}
+
 exports.getNewCompsInfo = async (req,res) => {
     try {
-        console.log('11111')
         newCompetitions.find()
         .then(item => {
             res.send(item)

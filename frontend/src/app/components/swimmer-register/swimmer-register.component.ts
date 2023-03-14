@@ -19,6 +19,7 @@ export class SwimmerRegisterComponent implements OnDestroy, OnInit {
   waitingNames: boolean = false;
   compName: string;
   compDate: string;
+  compID:string;
   poolSize: string;
   distances: any[] = [
     { value: '50' }, { value: '100' }, { value: '200' }, { value: '400' }, { value: '800' }, { value: '1500' }
@@ -74,7 +75,9 @@ export class SwimmerRegisterComponent implements OnDestroy, OnInit {
         console.log(err)
       }
     )
+    this.compID = this._route.snapshot.params['compID']
     this.compName = this._route.snapshot.params['compName']
+    console.log(this.compName)
     this.compDate = this._route.snapshot.params['compDate']
     this.poolSize = this._route.snapshot.params['poolSize']
     this.deleteCardSubscription = this._resultsService.deleteCards.subscribe(id => {
@@ -138,7 +141,8 @@ export class SwimmerRegisterComponent implements OnDestroy, OnInit {
   registerSwimmers() {
     if (this.CardIsFilled) {
     let info = {
-      user: localStorage.getItem('user'),
+      compID:this.compID,
+      user: localStorage.getItem('user').split('/')[localStorage.getItem('user').split('/').length - 1],
       cards: this.Cards
     }
     this._resultsService.registerSwimmers(info)

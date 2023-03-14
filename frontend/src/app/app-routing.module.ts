@@ -15,7 +15,7 @@ const routes: Routes = [
   {path:'registration',component:RegistrationComponent},
   {path:'login',component:LoginComponent},
   {path:'competitionsRegistraton',component:CompetitionsListComponent},
-  {path:'swimmerRegistraton/:compName/:compDate/:poolSize',component:SwimmerRegisterComponent},
+  {path:'swimmerRegistraton/:compName/:compDate/:poolSize/:compID',component:SwimmerRegisterComponent},
   // {path:'addactcodes',component:AddActCodesComponent},
   {path:'meetResults/:meetID',component:MeetResultsComponent,canActivate:[AuthGuard]},
   {path:'meetEventResults/:event/:meetID/:gender',component:MeetEventResultsComponent,canActivate:[AuthGuard]},

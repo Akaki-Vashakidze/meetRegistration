@@ -74,26 +74,41 @@ export class CompetitionsListComponent implements OnInit {
   }
 
   registerInCompetition(comp) {
-    let CompDeadlineDateArray = comp.deadline.split('.')
-    let compDay = CompDeadlineDateArray[0]
-    let compMonth = CompDeadlineDateArray[1]
-    let compYear = CompDeadlineDateArray[2]
-    let date2 = new Date(compDay + '/' + compMonth + '/' + compYear)
-    if (compYear >= this.year) {
-      if (compMonth > this.month) {
-        this._router.navigate(['/swimmerRegistraton', comp.name, comp.startDate, comp.poolSize])
-      } else if (compMonth == this.month) {
-        if (compDay >= this.day) {
-          this._router.navigate(['/swimmerRegistraton', comp.name, comp.startDate, comp.poolSize])
+    console.log(comp)
+    //აქქქქქქ შეამოწმე
+    let userID = localStorage.getItem('user').split('/')[localStorage.getItem('user').split('/').length - 1]
+    this._resultsService.checkDoubleCompRegistration(userID, comp._id).subscribe(
+      res => {
+        if (res.doubleReg == true) {
+          alert('თქვენ უკვე დაარეგისტრირეთ მოცურავეები ამ შეჯიბრზე. გსურთ მონაცემების შეცვლა? ეს ფუნქცია მალე დაემატება!')
         } else {
-          alert('შეჯიბრზე რეგისტრაციის ვადა ამოიწურა')
+          let CompDeadlineDateArray = comp.deadline.split('.')
+          let compDay = CompDeadlineDateArray[0]
+          let compMonth = CompDeadlineDateArray[1]
+          let compYear = CompDeadlineDateArray[2]
+
+          if (compYear >= this.year) {
+            if (compMonth > this.month) {
+              this._router.navigate(['/swimmerRegistraton', comp.name, comp.startDate, comp.poolSize, comp._id])
+            } else if (compMonth == this.month) {
+              if (compDay >= this.day) {
+                this._router.navigate(['/swimmerRegistraton', comp.name, comp.startDate, comp.poolSize, comp._id])
+              } else {
+                alert('შეჯიბრზე რეგისტრაციის ვადა ამოიწურა')
+              }
+            } else {
+              alert('შეჯიბრზე რეგისტრაციის ვადა ამოიწურა')
+            }
+          } else {
+            alert('შეჯიბრზე რეგისტრაციის ვადა ამოიწურა')
+          }
         }
-      } else {
-        alert('შეჯიბრზე რეგისტრაციის ვადა ამოიწურა')
+
+      },
+      err => {
+        console.log(err)
       }
-    } else {
-      alert('შეჯიბრზე რეგისტრაციის ვადა ამოიწურა')
-    }
+    )
 
   }
 }
