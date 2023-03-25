@@ -48,7 +48,8 @@ const materiaComponents: any[] | Type<any> | ModuleWithProviders<{}> = [
   MatProgressSpinnerModule,
   MatSelectModule,
   MatSidenavModule,
-  MatAutocompleteModule
+  MatAutocompleteModule,
+  MatDialogModule
 ]
 
 @NgModule({

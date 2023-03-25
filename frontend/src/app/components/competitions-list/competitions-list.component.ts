@@ -4,6 +4,8 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ResultsService } from 'src/app/services/results.service';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogComponent } from 'src/app/components/dialog/dialog.component';
 
 @Component({
   selector: 'app-competitions-list',
@@ -12,7 +14,7 @@ import { ResultsService } from 'src/app/services/results.service';
 })
 
 export class CompetitionsListComponent implements OnInit {
-  constructor(private _router: Router, private _resultsService: ResultsService) { }
+  constructor(private _dialog:MatDialog,private _router: Router, private _resultsService: ResultsService) { }
   dataSource: any;
   @ViewChild(MatSort) sort: MatSort | any;
   @ViewChild(MatPaginator) paginator: MatPaginator | any;
@@ -24,6 +26,7 @@ export class CompetitionsListComponent implements OnInit {
   loading : boolean = false;
   competitions = [];
   leftTime : any;
+  dialogRef: any;
 
   ngOnInit(): void {
     this.loading = true;
@@ -90,9 +93,18 @@ export class CompetitionsListComponent implements OnInit {
     this._resultsService.checkDoubleCompRegistration(userID, comp._id).subscribe(
       res => {
         if (res.doubleReg == true) {
-          alert('თქვენ უკვე დაარეგისტრირეთ მოცურავეები ამ შეჯიბრზე. გსურთ მონაცემების შეცვლა? ეს ფუნქცია მალე დაემატება!')
-          this._resultsService.registeredCards.next(res.foundMatch)
-          this._router.navigate(['/swimmerRegistraton', res.foundMatch.compInfo.name, res.foundMatch.compInfo.date, res.foundMatch.compInfo.poolSize, comp._id])
+         let dialogRef = this._dialog.open(DialogComponent)
+
+          dialogRef.afterClosed().subscribe(result => {
+           if(result == 'true') {
+            this._resultsService.registeredCards.next(res.foundMatch)
+            this._router.navigate(['/swimmerRegistraton', res.foundMatch.compInfo.name, res.foundMatch.compInfo.date, res.foundMatch.compInfo.poolSize, comp._id])
+           } else {
+            
+           }
+          })
+
+        
         } else {
           let CompDeadlineDateArray = comp.deadline.split('.')
           let compDay = CompDeadlineDateArray[0]

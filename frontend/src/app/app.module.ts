@@ -21,6 +21,7 @@ import { SwimmerCardComponent } from './components/swimmer-card/swimmer-card.com
 import { ClickedOutsideDirective } from './directives/clicked-outside.directive';
 import { ErrorComponent } from './components/error/error.component';
 import { CompetitionsListComponent } from './components/competitions-list/competitions-list.component';
+import { DialogComponent } from './components/dialog/dialog.component';
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import { CompetitionsListComponent } from './components/competitions-list/compet
     SwimmerCardComponent,
     ClickedOutsideDirective,
     ErrorComponent,
-    CompetitionsListComponent
+    CompetitionsListComponent,
+    DialogComponent
   ],
   imports: [
     BrowserModule,
@@ -48,6 +50,9 @@ import { CompetitionsListComponent } from './components/competitions-list/compet
     ReactiveFormsModule,
     HttpClientModule,
     FormsModule
+  ],
+  entryComponents:[
+    DialogComponent
   ],
   providers: [{
     provide:HTTP_INTERCEPTORS,
