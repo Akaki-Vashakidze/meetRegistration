@@ -11,11 +11,37 @@ export class ResultsService {
   deleteCards = new BehaviorSubject<any>('')
   IfCardIsFilled = new BehaviorSubject<any>(true)
   errorsOn = new BehaviorSubject<any>(false)
-
+  registeredCards = new BehaviorSubject<any>('')
   constructor(private _http:HttpClient) { }
+  cards = [];
 
   getComps () {
     return this._http.get<any>(environment.compsURL)
+  }
+
+  deleteCard(index:any){
+    this.cards.splice(index,1)
+  }
+
+  pushInCards (item:any) {
+   let num = 0;
+   let found = this.cards.find(info => {
+    num++
+    return info._id == item._id
+    })
+    if(found){
+      this.cards.splice(num-1,1,item)
+    } else {
+       this.cards.push(item)
+    }
+  }
+
+  setNewCardsArrAfterDlt (item:any) {
+    this.cards = item;
+  }
+
+  resetCards(){
+    this.cards = [];
   }
 
   checkDoubleCompRegistration(userID:string,compID:string) {

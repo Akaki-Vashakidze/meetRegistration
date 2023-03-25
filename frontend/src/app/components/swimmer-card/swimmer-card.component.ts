@@ -25,6 +25,7 @@ export class SwimmerCardComponent implements OnDestroy, OnInit {
   @Input() bestResultCompName: string;
   @Input() bestResultCompDate: string;
   @Input() clubNames: any;
+  ID:any;
   CLUBnames: any;
   swimmerRegistrationCardForm: FormGroup;
   lastValueLength: number = 0;
@@ -66,7 +67,7 @@ export class SwimmerCardComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
-
+    this.ID = Math.random()
     this.cardIdString = JSON.stringify(this.cardId)
     this.errorsOnSubs = this._resultsService.errorsOn.subscribe(item => {
       this.errorsOn = item
@@ -98,6 +99,7 @@ export class SwimmerCardComponent implements OnDestroy, OnInit {
       if (this.swimmerRegistrationCardForm.status == 'VALID') {
         this._resultsService.IfCardIsFilled.next(true)
         this._resultsService.errorsOn.next(false)
+        this._resultsService.pushInCards({...this.swimmerRegistrationCardForm.value,_id:this.ID})
       }
       if (this.swimmerRegistrationCardForm.status == 'INVALID') {
         this._resultsService.IfCardIsFilled.next(false)
@@ -110,6 +112,7 @@ export class SwimmerCardComponent implements OnDestroy, OnInit {
         // console.log('არ დაემატა იმიტომ რომ შლიდა')
       } else {
         if (val.length == 2) {
+          
           this.swimmerRegistrationCardForm.patchValue({
             'result': val + ':'
           })
@@ -162,7 +165,7 @@ export class SwimmerCardComponent implements OnDestroy, OnInit {
   deleteCard() {
     this._resultsService.deleteCards.next(this.cardId)
     this._resultsService.IfCardIsFilled.next(true)
-    this._resultsService.errorsOn.next(false)
+    // this._resultsService.errorsOn.next(false)
   }
 
   onSubmit() {

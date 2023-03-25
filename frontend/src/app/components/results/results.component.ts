@@ -24,15 +24,15 @@ export class ResultsComponent implements OnInit{
   
   constructor(private _resultsService: ResultsService, private _router: Router, private _authService: AuthService) { }
 
-   slowIntTimeout = setTimeout(() => {
-    if(this.loading == true) {
-    this.slowInternet = true;
-    // this._authService.errorItem.next('slow Internet (results), please check internet connection and tru again!')
-    this.loading = false;
-     alert('slow internet problem (results), check internet connection and try again')
-    }
+  //  slowIntTimeout = setTimeout(() => {
+  //   if(this.loading == true) {
+  //   this.slowInternet = true;
+  //   // this._authService.errorItem.next('slow Internet (results), please check internet connection and tru again!')
+  //   this.loading = false;
+  //    alert('slow internet problem (results), check internet connection and try again')
+  //   }
   
-   }, 5000);
+  //  }, 5000);
 
   ngOnInit(): void {
    

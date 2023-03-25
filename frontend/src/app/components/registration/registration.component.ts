@@ -56,7 +56,7 @@ export class RegistrationComponent implements OnInit{
             localStorage.setItem('token',res.token)
             localStorage.setItem('user',res.user.name + '/' + res.user.lastname + '/' + res.user.email + '/' + res.user.number + '/' + res.user.id)
             this._authService.SignedIn.next(true)
-            this.router.navigate(['/results'])
+            this.router.navigate([''])
           },
           err => { 
             if(err.error == 'acCode ი არასწორია') {

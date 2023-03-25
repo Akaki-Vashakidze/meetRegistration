@@ -10,6 +10,7 @@ import { ResultsService } from 'src/app/services/results.service';
   templateUrl: './competitions-list.component.html',
   styleUrls: ['./competitions-list.component.scss']
 })
+
 export class CompetitionsListComponent implements OnInit {
   constructor(private _router: Router, private _resultsService: ResultsService) { }
   dataSource: any;
@@ -20,12 +21,17 @@ export class CompetitionsListComponent implements OnInit {
   month: any;
   year: any;
   monthDay: any;
-
+  loading : boolean = false;
   competitions = [];
+  leftTime : any;
 
   ngOnInit(): void {
-    this._resultsService.getComps().subscribe(async item => {
-      this.competitions = await item;
+    this.loading = true;
+
+      this._resultsService.getComps().subscribe( 
+       res => {
+      this.loading = false;
+      this.competitions = res;
       const date = new Date()
       this.day = date.getDate()
       this.month = date.getMonth() + 1;
@@ -33,59 +39,68 @@ export class CompetitionsListComponent implements OnInit {
       this.dataSource = new MatTableDataSource(this.competitions);
       this.dataSource.sort = this.sort;
       this.competitions.forEach(item => {
-        let deadlineDay = parseInt(item.deadline.split('.')[0])
-        let deadlineMonth = parseInt(item.deadline.split('.')[1]);
-        let deadlineYear = parseInt(item.deadline.split('.')[2]);
-        let leftYear, leftMonth, leftDay;
-        leftYear = deadlineYear - this.year;
-        leftMonth = deadlineMonth - this.month;
-        leftDay = deadlineDay - this.day;
-        let leftTime;
+          let deadlineDay = parseInt(item.deadline.split('.')[0])
+          let deadlineMonth = parseInt(item.deadline.split('.')[1]);
+          let deadlineYear = parseInt(item.deadline.split('.')[2]);
+          let leftYear, leftMonth, leftDay;
+          leftYear = deadlineYear - this.year;
+          leftMonth = deadlineMonth - this.month;
+          leftDay = deadlineDay - this.day;
+    
         if (leftYear > 0) {
-          leftTime = leftYear + ' წელზე მეტი'
+          this.leftTime = leftYear + ' წელზე მეტი'
         } else if (leftYear < 0) {
-          leftTime = 'რეგისტრაციის ვადა ამოიწურა'
+          this.leftTime = 'რეგისტრაციის ვადა ამოიწურა'
         }
         else {
           if (leftMonth < 0) {
-            leftTime = 'რეგისტრაციის ვადა ამოიწურა'
+            this.leftTime = 'რეგისტრაციის ვადა ამოიწურა'
           } else if (leftMonth > 0 && leftDay >= 0) {
-            leftTime = leftMonth + ' თვე ' + leftDay + 'დღე'
+            this.leftTime = leftMonth + ' თვე ' + leftDay + 'დღე'
           } else if (leftMonth > 0 && leftDay < 0) {
             if (leftMonth == 1) {
-              leftTime = (30 + leftDay) + ' დღე'
+              this.leftTime = (30 + leftDay) + ' დღე'
             } else {
-              leftTime = (leftMonth - 1) + ' თვე ' + (30 + leftDay) + ' დღე'
+              this.leftTime = (leftMonth - 1) + ' თვე ' + (30 + leftDay) + ' დღე'
             }
           } else if (leftMonth == 0 && leftDay >= 0) {
             if (leftDay == 0) {
-              leftTime = 'დდელაინი იწურება დღეს'
+              this.leftTime = 'დედლაინი იწურება დღეს'
             } else {
-              leftTime = leftDay + ' დღე'
+              this.leftTime = leftDay + ' დღე'
             }
           } else {
-            leftTime = 'რეგისტრაციის ვადა ამოიწურა'
+            this.leftTime = 'რეგისტრაციის ვადა ამოიწურა'
           }
         }
-        item['timeLeft'] = leftTime
+        item['timeLeft'] = this.leftTime
       })
-    })
-
+    },
+    err => {
+      this.loading = false;
+      console.log(err)
+    }
+    )
   }
 
   registerInCompetition(comp) {
-    console.log(comp)
-    //აქქქქქქ შეამოწმე
+    this._resultsService.resetCards();
     let userID = localStorage.getItem('user').split('/')[localStorage.getItem('user').split('/').length - 1]
+   
     this._resultsService.checkDoubleCompRegistration(userID, comp._id).subscribe(
       res => {
         if (res.doubleReg == true) {
           alert('თქვენ უკვე დაარეგისტრირეთ მოცურავეები ამ შეჯიბრზე. გსურთ მონაცემების შეცვლა? ეს ფუნქცია მალე დაემატება!')
+          this._resultsService.registeredCards.next(res.foundMatch)
+          this._router.navigate(['/swimmerRegistraton', res.foundMatch.compInfo.name, res.foundMatch.compInfo.date, res.foundMatch.compInfo.poolSize, comp._id])
         } else {
           let CompDeadlineDateArray = comp.deadline.split('.')
           let compDay = CompDeadlineDateArray[0]
           let compMonth = CompDeadlineDateArray[1]
           let compYear = CompDeadlineDateArray[2]
+
+          localStorage.removeItem('registerCards')
+          this._resultsService.registeredCards.next('')
 
           if (compYear >= this.year) {
             if (compMonth > this.month) {
@@ -103,12 +118,10 @@ export class CompetitionsListComponent implements OnInit {
             alert('შეჯიბრზე რეგისტრაციის ვადა ამოიწურა')
           }
         }
-
       },
       err => {
         console.log(err)
       }
     )
-
   }
 }

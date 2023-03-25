@@ -8,6 +8,12 @@ const newCompetitions = require('../models/newCompetitions')
 
 exports.registerSwimmers = async (req,res) => {
     try {
+        console.log(req.body)
+        RegistrationInfo.deleteOne({compID:req.body.compID}).then(function(){
+            console.log("Data deleted"); // Success
+        }).catch(function(error){
+            console.log(error); // Failure
+        });
         let registrationInfo = new RegistrationInfo(req.body)
         registrationInfo.save((error, registeredInfo) => {
             res.status(200).send({
@@ -23,11 +29,11 @@ exports.registerSwimmers = async (req,res) => {
 exports.checkDoubleCompReg = async (req,res) => {
     try {
         RegistrationInfo.find().then(item => {
-            let founfMatch = item.find(obj => {
+            let foundMatch = item.find(obj => {
                 return obj.user == req.body.userID && obj.compID == req.body.compID
             })
-            if(founfMatch) {
-                res.send({doubleReg:true,founfMatch})
+            if(foundMatch) {
+                res.send({doubleReg:true,foundMatch})
             } else {
                 res.send({doubleReg:false})
             }
