@@ -100,7 +100,7 @@ export class CompetitionsListComponent implements OnInit {
             this._resultsService.registeredCards.next(res.foundMatch)
             this._router.navigate(['/swimmerRegistraton', res.foundMatch.compInfo.name, res.foundMatch.compInfo.date, res.foundMatch.compInfo.poolSize, comp._id])
            } else {
-            
+            //არაფერი
            }
           })
 
