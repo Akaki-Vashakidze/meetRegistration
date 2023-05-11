@@ -1,7 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -11,7 +13,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   slowInternet:boolean = false;
   loading:boolean = false;
-  constructor(private _authService: AuthService,private router:Router) { }
+  constructor(private _dialog:MatDialog,private _authService: AuthService,private router:Router) { }
 
  
 
@@ -33,11 +35,11 @@ export class LoginComponent implements OnInit {
     //     }
     // }, 5000);
 
-
-    this.loading = true;
+    
     if (this.loginForm.status == 'INVALID') {
-      alert('გთხოვთ შეავსოთ ყველა საჭირო გრაფა')
+      this._dialog.open(AlertDialogComponent,{data:{content:'გთხოვთ შეავსოთ ყველა საჭირო გრაფა'}})
     } else {
+    this.loading = true;
      this._authService.loginUser(this.loginForm.value)
         .subscribe(
           res => {
@@ -52,10 +54,10 @@ export class LoginComponent implements OnInit {
             // this._authService.errorItem.next('login Error')
             this.loading = false;
             if(err.error == 'invalid email') {
-              alert('მეილი არასწორია')
+              this._dialog.open(AlertDialogComponent,{data:{content:'მეილი არასწორია'}})
             }
             if(err.error == 'invalid password') {
-              alert('პაროლი არასწორია')
+              this._dialog.open(AlertDialogComponent,{data:{content:'პაროლი არასწორია'}})
             }
           }
         )

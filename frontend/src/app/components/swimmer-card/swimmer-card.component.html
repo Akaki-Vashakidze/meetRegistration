@@ -7,7 +7,7 @@
         <mat-form-field appearance="fill">
             <mat-label>დისტანცია</mat-label>
             <mat-select formControlName="distance">
-                <mat-option *ngFor="let item of distances" [value]="item.value">
+                <mat-option disabled *ngFor="let item of distances" [value]="item.value">
                     {{item.value}}
                 </mat-option>
             </mat-select>
@@ -15,14 +15,14 @@
         <mat-form-field appearance="fill">
             <mat-label>სტილი</mat-label>
             <mat-select formControlName="style">
-                <mat-option *ngFor="let item of styles" [value]="item.value">
+                <mat-option disabled *ngFor="let item of styles" [value]="item.value">
                     {{item.value}}
                 </mat-option>
             </mat-select>
         </mat-form-field>
         <mat-form-field class="form-group">
             <mat-label >გვარი:</mat-label>
-            <input type="text" matInput formControlName="lastname" class="form-control">
+            <input readonly type="text" matInput formControlName="lastname" class="form-control">
             <mat-hint style="color:red;"
                 *ngIf="swimmerRegistrationCardForm.get('lastname')?.touched  && swimmerRegistrationCardForm.get('lastname')?.errors?.['required']">
                 გვარის შეყვანა აუცილებელია
@@ -30,7 +30,7 @@
         </mat-form-field>
         <mat-form-field class="form-group">
             <mat-label >სახელი:</mat-label>
-            <input type="text" matInput formControlName="name" class="form-control">
+            <input readonly type="text" matInput formControlName="name" class="form-control">
             <mat-hint style="color:red;"
                 *ngIf="swimmerRegistrationCardForm.get('name')?.touched  && swimmerRegistrationCardForm.get('name')?.errors?.['required']">
                 სახელის შეყვანა აუცილებელია
@@ -83,7 +83,11 @@
 
         <mat-form-field class="form-group">
             <mat-label >შედეგი:</mat-label>
-            <input type="text" matInput type="text" placeholder="01:01.01" formControlName="result"
+            <!-- თუ წინასწარი შედეგი არსებობს -->
+            <input *ngIf="result" readonly type="text" matInput type="text" placeholder="01:01.01" formControlName="result"
+                class="form-control">
+                 <!-- თუ წინასწარი შედეგი არ არსებობს -->
+                <input *ngIf="!result" type="text" matInput type="text" placeholder="01:01.01" formControlName="result"
                 class="form-control">
             <mat-hint style="color:red;"
                 *ngIf=" errorsOn && swimmerRegistrationCardForm.get('result')?.errors?.['required'] || swimmerRegistrationCardForm.get('result')?.touched  && swimmerRegistrationCardForm.get('result')?.errors?.['required']">
@@ -105,13 +109,13 @@
 
         <mat-form-field *ngIf="bestResultCompName" class="form-group">
             <mat-label for="bestResultCompName">შეჯიბრი:</mat-label>
-            <input type="text" matInput formControlName="bestResultCompName"
+            <input readonly type="text" matInput formControlName="bestResultCompName"
                 class="form-control">
         </mat-form-field>
 
         <mat-form-field *ngIf="bestResultCompDate" class="form-group">
             <mat-label >რიცხვი:</mat-label>
-            <input type="text" matInput formControlName="bestResultCompDate"
+            <input readonly type="text" matInput formControlName="bestResultCompDate"
                 class="form-control">
         </mat-form-field>
         <div>

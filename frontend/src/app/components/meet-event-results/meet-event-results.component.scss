@@ -15,3 +15,63 @@ text-align: center;
     top: 200px;
     margin: auto;
   }
+
+  h1 {
+    margin: auto;
+    width: 100px;
+    padding: 10px;
+    }
+
+  body {
+    font-family: 'Covered By Your Grace', cursive;
+    line-height: 1.25;
+  }
+  
+  .table1 .row:nth-child(even) {background: #CCC}
+  .table1 .row:nth-child(odd) {background: #FFF}
+  
+  .tableDiv {
+    margin: 10px;
+  }
+  
+  .filter {
+    margin: auto;
+    width: 200px;
+    padding: 10px;
+   }
+  
+  @media screen and (max-width: 650px) {
+    .table1 {
+      border: 0;
+      vertical-align: middle;
+    }
+  
+    .table1 caption {
+      font-size: 1em;
+    }
+  
+    .header {
+      border: 10px solid;
+      clip: rect(0 0 0 0);
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      position: absolute;
+      width: 1px;
+    }
+    
+    .row {
+      border-bottom: 5px solid #ddd;
+      display: block;
+    }
+  
+   
+    .table1 .cell:last-child {
+      border-bottom: 0;
+    }
+  
+  
+    .table1 .cell:first-child {
+      margin-top: 4%;
+    }
+  }

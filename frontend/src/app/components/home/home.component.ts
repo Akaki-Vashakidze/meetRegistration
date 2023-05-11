@@ -7,7 +7,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
   userName:string;
+  userIn:boolean;
 ngOnInit(): void {
-  this.userName = localStorage.getItem('user').split('/')[0]
+  this.userIn = !!localStorage.getItem('user')
+  if(this.userName) {
+     this.userName = localStorage.getItem('user').split('/')[0]
+  }
+ 
 }
 }

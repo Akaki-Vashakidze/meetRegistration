@@ -1,52 +1,105 @@
 <mat-spinner *ngIf="loading"></mat-spinner>
-<div class="table" *ngIf="!loading">
-    <h1>შეჯიბრების ცხრილი</h1>
-    <table mat-table [dataSource]="dataSource" matSort>
-      
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">
-          <strong>სახელი</strong>
-        </th>
-        <td mat-cell *matCellDef="let info">{{info.name}}</td>
-      </ng-container>
+<!-- <div class="table" *ngIf="!loading">
+  <h1>შეჯიბრების ცხრილი</h1>
+  <table mat-table [dataSource]="dataSource" matSort>
 
-      <ng-container matColumnDef="poolSize">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">
-          <strong>აუზის სიგრძე</strong>
-        </th>
-        <td mat-cell *matCellDef="let info">{{info.poolSize}}</td>
-      </ng-container>
-    
-      <ng-container matColumnDef="date">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by weight">
-         <strong>თარიღი</strong>
-        </th>
-        <td mat-cell *matCellDef="let info">{{info.startDate}}</td>
-      </ng-container>
-    
-      <ng-container matColumnDef="deadline">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by symbol">
-         <strong>რეგისტრაციის ბოლო ვადა</strong>
-        </th>
-        <td mat-cell *matCellDef="let info">{{info.deadline}}</td>
-      </ng-container>
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">
+        <strong>სახელი</strong>
+      </th>
+      <td mat-cell *matCellDef="let info">{{info.name}}</td>
+    </ng-container>
 
-      <ng-container matColumnDef="regisration">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by symbol">
-         <strong>რეგისტრაცია</strong>
-        </th>
-        <td mat-cell *matCellDef="let info" ><a (click)="registerInCompetition(info)">რეგისტრაცია</a></td>
-      </ng-container>
+    <ng-container matColumnDef="poolSize">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">
+        <strong>აუზის სიგრძე</strong>
+      </th>
+      <td mat-cell *matCellDef="let info">{{info.poolSize}}</td>
+    </ng-container>
 
-      <ng-container matColumnDef="timeLeft">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by symbol">
-         <strong>დარჩა</strong>
-        </th>
-        <td mat-cell *matCellDef="let info">{{info.timeLeft}}</td>
-      </ng-container>
-    
-      <tr mat-header-row *matHeaderRowDef="columns"></tr>
-      <tr mat-row *matRowDef="let row; columns: columns;"></tr>
-    
-    </table>
-    </div>
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by weight">
+        <strong>თარიღი</strong>
+      </th>
+      <td mat-cell *matCellDef="let info">{{info.startDate}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="deadline">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by symbol">
+        <strong>რეგისტრაციის ბოლო ვადა</strong>
+      </th>
+      <td mat-cell *matCellDef="let info">{{info.deadline}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="regisration">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by symbol">
+        <strong>რეგისტრაცია</strong>
+      </th>
+      <td mat-cell *matCellDef="let info"><a (click)="registerInCompetition(info)">რეგისტრაცია</a></td>
+    </ng-container>
+
+    <ng-container matColumnDef="timeLeft">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by symbol">
+        <strong>დარჩა</strong>
+      </th>
+      <td mat-cell *matCellDef="let info">{{info.timeLeft}}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columns"></tr>
+    <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+
+  </table>
+</div> -->
+
+<div class="filter">
+  <mat-form-field>
+    <input  matInput (keyup)="applyFilter($event.target.value)" placeholder="გაფილტვრა">
+  </mat-form-field>
+</div>
+
+<div class="tableDiv" (window:resize)="onResize()">
+  <mat-table class="table1" [dataSource]="dataSource" matSort>
+
+    <!-- ID Column -->
+    <ng-container matColumnDef="name">
+      <mat-header-cell class="header" *matHeaderCellDef mat-sort-header> სახელი </mat-header-cell>
+      <mat-cell class="cell" *matCellDef="let row" > {{row.name}} </mat-cell>
+    </ng-container>
+
+    <!-- Progress Column -->
+    <ng-container matColumnDef="poolSize">
+      <mat-header-cell class="header" *matHeaderCellDef mat-sort-header> აუზის სიგრძე </mat-header-cell>
+      <mat-cell class="cell" *matCellDef="let row" > {{innerWidth < 650 ? 'აუზის სიგრძე - ' + row.poolSize:row.poolSize}}  </mat-cell>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="date">
+      <mat-header-cell class="header" *matHeaderCellDef mat-sort-header> თარიღი </mat-header-cell>
+      <mat-cell class="cell" *matCellDef="let row"> {{innerWidth < 650 ? 'თარიღი - ' + row.startDate:row.startDate}} </mat-cell>
+    </ng-container>
+
+    <!-- Color Column -->
+    <ng-container matColumnDef="deadline">
+      <mat-header-cell class="header" *matHeaderCellDef mat-sort-header> რეგისტრაციის ბოლო ვადა </mat-header-cell>
+      <mat-cell class="cell" *matCellDef="let row"> {{innerWidth < 650 ? 'რეგისტრაციის ბოლო ვადა - ' + row.deadline:row.deadline}} </mat-cell>
+    </ng-container>
+
+     <!-- Color Column -->
+     <ng-container matColumnDef="regisration">
+      <mat-header-cell class="header" *matHeaderCellDef mat-sort-header> რეგისტრაცია </mat-header-cell>
+      <mat-cell class="cell" *matCellDef="let row"><a (click)="registerInCompetition(row)">რეგისტრაცია</a></mat-cell>
+    </ng-container>
+
+     <!-- Color Column -->
+     <ng-container matColumnDef="timeLeft">
+      <mat-header-cell class="header" *matHeaderCellDef mat-sort-header> დედლაინი </mat-header-cell>
+      <mat-cell class="cell" *matCellDef="let row"> {{row.timeLeft}} </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="columns"></mat-header-row>
+    <mat-row class="row" *matRowDef="let row; columns: columns;">
+    </mat-row>
+  </mat-table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+</div>

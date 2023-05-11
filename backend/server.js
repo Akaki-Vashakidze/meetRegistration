@@ -30,8 +30,13 @@ app.use('/registration',registration)
 app.use('/login',login)
 app.use('/results',results)
 
-app.get('/', function(req,res){
-    
+app.get('/', async (req,res) =>{
+    try {
+            res.send({works:'true'})
+    }
+    catch {
+        res.status(500).send("something went wrong")
+    }
 })
 
 app.listen(PORT,function(){

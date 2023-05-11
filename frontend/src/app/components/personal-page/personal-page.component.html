@@ -1,0 +1,70 @@
+<div *ngIf="!edit" class="userInfo">
+    <div>სახელი: {{userInfo.name}}</div>
+    <div>გვარი: {{userInfo.lastname}}</div>
+    <div>იმეილი: {{userInfo.email}}</div>
+    <div>მობ.ნომერი: {{userInfo.mobile}}</div>
+    <div>პაროლი: ********</div>
+    <div><button mat-raised-button (click)="editMode()">პირადი ინფორმაციის შეცვლა</button></div>
+</div>
+
+<form *ngIf="edit" [formGroup]="personalInfoForm" (ngSubmit)="onSubmit()">
+
+    <mat-form-field class="form-group">
+        <mat-label for="name">სახელი:</mat-label>
+        <input matInput type="text" id="name" formControlName="name" class="form-control">
+        <mat-hint style="color:red;"
+            *ngIf="personalInfoForm.get('name')?.touched  && personalInfoForm.get('name')?.errors?.['required']">
+            სახელის შეყვანა აუცილებელია
+        </mat-hint>
+    </mat-form-field>
+
+    <mat-form-field class="form-group">
+        <mat-label for="lastname">გვარი:</mat-label>
+        <input matInput type="text" id="lastname" formControlName="lastname" class="form-control">
+        <mat-hint style="color:red;"
+            *ngIf="personalInfoForm.get('lastname')?.touched  && personalInfoForm.get('lastname')?.errors?.['required']">
+            გვარის შეყვანა აუცილებელია
+        </mat-hint>
+    </mat-form-field>
+
+    <mat-form-field class="form-group">
+        <mat-label for="email">მეილი:</mat-label>
+        <input matInput type="text" id="email" formControlName="email" class="form-control">
+        <mat-hint style="color:red;"
+            *ngIf="personalInfoForm.get('email')?.touched  && personalInfoForm.get('email')?.errors?.['required']">
+            მეილის შეყვანა აუცილებელია
+        </mat-hint>
+    </mat-form-field>
+
+    <mat-form-field class="form-group">
+        <mat-label for="mobile">მობ.ნომ:</mat-label>
+        <input matInput type="text" id="mobile" formControlName="mobile" class="form-control">
+        <mat-hint style="color:red;"
+            *ngIf="personalInfoForm.get('mobile')?.touched  && personalInfoForm.get('mobile')?.errors?.['required']">
+            მობ.ნომრის შეყვანა აუცილებელია
+        </mat-hint>
+        <mat-hint style="color:red;"
+        *ngIf="personalInfoForm.get('mobile')?.touched  && personalInfoForm.get('mobile')?.errors?.['minlength']">
+         ნომერი უნდა შეიცავდეს 9 ციფრს
+      </mat-hint>
+      <mat-hint style="color:red;"
+      *ngIf="personalInfoForm.get('mobile')?.touched  && personalInfoForm.get('mobile')?.errors?.['maxlength']">
+      ნომერი უნდა შეიცავდეს 9 ციფრს
+    </mat-hint>
+    </mat-form-field>
+
+    <mat-form-field class="form-group">
+        <mat-label for="password">პაროლი:</mat-label>
+        <input matInput type="password" id="password" formControlName="password" class="form-control">
+        <mat-hint style="color:red;"
+            *ngIf="personalInfoForm.get('password')?.touched  && personalInfoForm.get('password')?.errors?.['required']">
+            პაროლის შეყვანა აუცილებელია
+        </mat-hint>
+        <mat-hint style="color:red;"
+            *ngIf="personalInfoForm.get('password')?.touched  && personalInfoForm.get('password')?.errors?.['minlength']">
+            პაროლი უნდა იყოს მინიმუმ 8 სიმბოლო
+        </mat-hint>
+    </mat-form-field>
+
+    <button type="submit" mat-raised-button>პირადი ინფორმაციის შეცვლა</button>
+</form>

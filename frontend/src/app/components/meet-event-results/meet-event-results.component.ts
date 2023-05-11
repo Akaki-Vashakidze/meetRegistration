@@ -23,7 +23,10 @@ constructor(private route:ActivatedRoute,private _router:Router, private _authSe
 event:string;
 meetID:string;
 gender:string;
+innerWidth:any;
 ngOnInit(): void {
+  this.innerWidth = window.innerWidth;
+
   this.loading = true;
  this.event = this.route.snapshot.params['event']
  this.meetID = this.route.snapshot.params['meetID']
@@ -44,6 +47,18 @@ ngOnInit(): void {
    }
  )
 }
+
+
+applyFilter(filterValue: string) {
+  filterValue = filterValue.trim(); // Remove whitespace
+  filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
+  this.dataSource.filter = filterValue;
+}
+
+onResize() {
+  this.innerWidth = window.innerWidth;
+}
+
 seeEvents(meet:any){
 this._router.navigate(['meetEventResults',meet.event])
 }

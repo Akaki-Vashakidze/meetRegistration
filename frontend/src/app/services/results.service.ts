@@ -74,8 +74,8 @@ export class ResultsService {
   return this._http.post<any>(environment.eventResultsURL,info)
   }
 
-  openSidenav() {
-    this.openedSidenav.next(true)
+  openSidenav(item) {
+    this.openedSidenav.next(item)
   }
 
   getSwimmerCardInfo(cardInfo:any) {

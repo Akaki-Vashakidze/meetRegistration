@@ -21,7 +21,7 @@ export class ResultsComponent implements OnInit{
   loading: boolean = false;
   @ViewChild(MatSort) sort: MatSort | any;
   @ViewChild(MatPaginator) paginator: MatPaginator | any;
-  
+  innerWidth: any;
   constructor(private _resultsService: ResultsService, private _router: Router, private _authService: AuthService) { }
 
   //  slowIntTimeout = setTimeout(() => {
@@ -35,7 +35,7 @@ export class ResultsComponent implements OnInit{
   //  }, 5000);
 
   ngOnInit(): void {
-   
+    this.innerWidth = window.innerWidth;
     this.loading = true;
      this._resultsService.getResults()
       .subscribe(
@@ -52,6 +52,16 @@ export class ResultsComponent implements OnInit{
           this._authService.SignedIn.next(false)
         }
       )
+  }
+
+  applyFilter(filterValue: string) {
+    filterValue = filterValue.trim(); // Remove whitespace
+    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
+    this.dataSource.filter = filterValue;
+  }
+
+  onResize() {
+    this.innerWidth = window.innerWidth;
   }
 
   seeResults(item:any){

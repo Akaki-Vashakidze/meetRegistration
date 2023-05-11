@@ -1,9 +1,11 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { ResultsService } from 'src/app/services/results.service';
+import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
 
 @Component({
   selector: 'app-swimmer-card',
@@ -41,7 +43,7 @@ export class SwimmerCardComponent implements OnDestroy, OnInit {
 
   cardIdString: string;
 
-  constructor(private _authService: AuthService, private router: Router, private _resultsService: ResultsService) { }
+  constructor(private _dialog:MatDialog,private _authService: AuthService, private router: Router, private _resultsService: ResultsService) { }
 
   pointValidator(control: FormControl) {
     //აქ ერრორს არ აგდებს თუ : არ არის ინფუთში. ჩვენ გვინდა წერტილის ვალიდატორიც
@@ -170,7 +172,7 @@ export class SwimmerCardComponent implements OnDestroy, OnInit {
 
   onSubmit() {
     if (this.swimmerRegistrationCardForm.status == 'INVALID') {
-      alert('გთხოვთ შეავსოთ ყველა საჭირო გრაფა')
+      this._dialog.open(AlertDialogComponent,{data:{content:'გთხოვთ შეავსოთ ყველა საჭირო გრაფა'}})
     } else {
       console.log(this.swimmerRegistrationCardForm.value)
     }

@@ -41,6 +41,7 @@ const materiaComponents: any[] | Type<any> | ModuleWithProviders<{}> = [
   MatIconModule,
   MatFormFieldModule,
   MatInputModule,
+  MatMenuModule,
   MatButtonModule,
   MatRadioModule,
   MatTableModule,

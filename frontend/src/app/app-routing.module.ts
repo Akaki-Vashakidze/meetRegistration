@@ -6,6 +6,7 @@ import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { MeetEventResultsComponent } from './components/meet-event-results/meet-event-results.component';
 import { MeetResultsComponent } from './components/meet-results/meet-results.component';
+import { PersonalPageComponent } from './components/personal-page/personal-page.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { ResultsComponent } from './components/results/results.component';
 import { SwimmerRegisterComponent } from './components/swimmer-register/swimmer-register.component';
@@ -14,6 +15,7 @@ import { AuthGuard } from './guards/auth.guard';
 const routes: Routes = [
   {path:'registration',component:RegistrationComponent},
   {path:'login',component:LoginComponent},
+  {path:'personalPage',component:PersonalPageComponent},
   {path:'competitionsRegistraton',component:CompetitionsListComponent},
   {path:'swimmerRegistraton/:compName/:compDate/:poolSize/:compID',component:SwimmerRegisterComponent},
   // {path:'addactcodes',component:AddActCodesComponent},

@@ -8,8 +8,8 @@ const newCompetitions = require('../models/newCompetitions')
 
 exports.registerSwimmers = async (req,res) => {
     try {
-        console.log(req.body)
-        RegistrationInfo.deleteOne({compID:req.body.compID}).then(function(){
+        // console.log(req.body)
+        RegistrationInfo.deleteOne({compID:req.body.compID,user:req.body.user}).then(function(){
             console.log("Data deleted"); // Success
         }).catch(function(error){
             console.log(error); // Failure
@@ -30,6 +30,8 @@ exports.checkDoubleCompReg = async (req,res) => {
     try {
         RegistrationInfo.find().then(item => {
             let foundMatch = item.find(obj => {
+                // console.log(obj.user,req.body.userID , 'user')
+                // console.log(obj.compID, req.body.compID , 'compID')
                 return obj.user == req.body.userID && obj.compID == req.body.compID
             })
             if(foundMatch) {

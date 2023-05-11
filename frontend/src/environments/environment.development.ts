@@ -1,5 +1,10 @@
 
-let port = 'http://localhost:3500/'
+// let port = 'http://localhost:3500/'
+
+// let port = 'https://regback-production.up.railway.app/'
+
+let port = 'https://cute-teal-jackrabbit-wear.cyclic.app/'
+
 
 export const environment = {
     registrationURL: port + 'registration/register',

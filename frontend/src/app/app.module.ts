@@ -22,6 +22,9 @@ import { ClickedOutsideDirective } from './directives/clicked-outside.directive'
 import { ErrorComponent } from './components/error/error.component';
 import { CompetitionsListComponent } from './components/competitions-list/competitions-list.component';
 import { DialogComponent } from './components/dialog/dialog.component';
+import { PersonalPageComponent } from './components/personal-page/personal-page.component';
+import { AlertDialogComponent } from './components/alert-dialog/alert-dialog.component';
+
 
 
 @NgModule({
@@ -40,7 +43,9 @@ import { DialogComponent } from './components/dialog/dialog.component';
     ClickedOutsideDirective,
     ErrorComponent,
     CompetitionsListComponent,
-    DialogComponent
+    DialogComponent,
+    PersonalPageComponent,
+    AlertDialogComponent
   ],
   imports: [
     BrowserModule,

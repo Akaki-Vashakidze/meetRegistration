@@ -1,14 +1,16 @@
-<p>
-    <mat-toolbar color="primary">
+
+    <mat-toolbar (window:resize)="onResize()" color="primary">
         <span class="leftMenu">
-            <span *ngIf="user" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"  routerLink="/" class="login pointer">მთავარი</span>
+            <span routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" routerLink="/"
+                class="login pointer">მთავარი</span>
         </span>
-        <span class="rightMenu">
+        <span *ngIf="innerWidth > 650" class="rightMenu">
             <span *ngIf="user" routerLinkActive="active" routerLink="/results" class="login pointer">შედეგები</span>
             <span *ngIf="user"  routerLinkActive="active" (click)="openSidenav()" routerLink="/competitionsRegistraton" class="competitions pointer">შეჯიბრზე დარეგისტრირება</span>
             <span *ngIf="!user"  routerLinkActive="active" routerLink="/registration" class="register pointer">რეგისტრაცია</span>
             <span *ngIf="!user"  routerLinkActive="active" routerLink="/login" class="login pointer">შესვლა</span>
-            <!-- <span *ngIf="user" routerLink="/addactcodes" class="logout pointer">აქტივაციის კოდების დამატება</span> -->
+             <!-- <span *ngIf="user" routerLink="/addactcodes" class="logout pointer">აქტივაციის კოდების დამატება</span>  -->
+            <span *ngIf="user" routerLink="/personalPage" class="logout pointer">პირადი გვერდი</span>
             <span *ngIf="user" (click)="signOut()" class="logout pointer">გამოსვლა</span>
             <span (click)="signOut()" *ngIf="user">
                 <button mat-icon-button class="pointer">
@@ -16,5 +18,19 @@
                 </button>
             </span>
         </span>
+
+        <button *ngIf="innerWidth < 650" mat-button [matMenuTriggerFor]="menu"><b>მენიუ</b></button>
+        <mat-menu #menu="matMenu">
+            <button  *ngIf="user" routerLinkActive="active" routerLink="/results" class="login pointer" mat-menu-item>შედეგები</button>
+            <button *ngIf="user"  routerLinkActive="active" (click)="openSidenav()" routerLink="/competitionsRegistraton" class="competitions pointer" mat-menu-item>შეჯიბრზე დარეგისტრირება</button>
+            <button *ngIf="!user"  routerLinkActive="active" routerLink="/registration" class="register pointer" mat-menu-item>რეგისტრაცია</button>
+            <button *ngIf="!user"  routerLinkActive="active" routerLink="/login" class="login pointer" mat-menu-item>შესვლა</button>
+            <button *ngIf="user" routerLink="/personalPage" class="logout pointer" mat-menu-item>პირადი გვერდი</button>
+            <button *ngIf="user" (click)="signOut()" class="logout pointer" mat-menu-item>გამოსვლა</button>
+            <span (click)="signOut()" *ngIf="user">
+                <button mat-icon-button class="pointer">
+                    <mat-icon>logout</mat-icon>
+                </button>
+            </span>
+        </mat-menu>
     </mat-toolbar>
-</p>

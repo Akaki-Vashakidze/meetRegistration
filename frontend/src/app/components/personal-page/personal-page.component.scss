@@ -1,0 +1,18 @@
+.userInfo {
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translate(-50%,0);
+}
+
+div {
+    margin: 5px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%,0);
+}

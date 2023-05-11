@@ -1,5 +1,5 @@
 <mat-spinner *ngIf="loading;"></mat-spinner>
-
+<!-- 
 <div class="table" [ngClass]="loading? 'hide':''">
     <h1>{{header}}</h1>
     <table mat-table [dataSource]="dataSource" matSort>
@@ -44,4 +44,52 @@
     
     </table>
     <mat-paginator [pageSizeOptions]="[5,10,20]" showFirstLastButtons=""></mat-paginator>
-    </div>
+    </div> -->
+
+
+
+<div class="filter" [ngClass]="loading ?'hide':''">
+  <h1>{{header}}</h1>
+  <mat-form-field>
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="გაფილტვრა">
+  </mat-form-field>
+</div>
+<div class="tableDiv" [ngClass]="loading ?'hide':''" (window:resize)="onResize()">
+
+  <mat-table class="table1" [dataSource]="dataSource" matSort>
+    <!-- ID Column -->
+    <ng-container matColumnDef="number">
+      <mat-header-cell class="header" *matHeaderCellDef mat-sort-header> ნომერი </mat-header-cell>
+      <mat-cell class="cell" *matCellDef="let row,let i = index" > {{i + 1}} </mat-cell>
+    </ng-container>
+
+    <!-- Progress Column -->
+    <ng-container matColumnDef="name">
+      <mat-header-cell class="header" *matHeaderCellDef mat-sort-header> სახელი </mat-header-cell>
+      <mat-cell class="cell" *matCellDef="let row" > {{row.name}}  </mat-cell>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="age">
+      <mat-header-cell class="header" *matHeaderCellDef mat-sort-header> დაბ.წელი </mat-header-cell>
+      <mat-cell class="cell" *matCellDef="let row"> {{innerWidth < 650 ? 'დაბ.წელი - ' + row.age:row.age}} </mat-cell>
+    </ng-container>
+
+    <!-- Color Column -->
+    <ng-container matColumnDef="result">
+      <mat-header-cell class="header" *matHeaderCellDef mat-sort-header> შედეგი </mat-header-cell>
+      <mat-cell class="cell" *matCellDef="let row">{{innerWidth < 650 ? 'შედეგი - ' + row.result:row.result}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="points">
+      <mat-header-cell class="header" *matHeaderCellDef mat-sort-header> ქულა </mat-header-cell>
+      <mat-cell class="cell" *matCellDef="let row">{{innerWidth < 650 ? 'ქულა - ' + row.points:row.points}} </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="columns"></mat-header-row>
+    <mat-row class="row" *matRowDef="let row; columns: columns;">
+    </mat-row>
+  </mat-table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+</div>

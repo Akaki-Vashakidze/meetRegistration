@@ -1,7 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Form, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
 
 @Component({
   selector: 'app-registration',
@@ -12,7 +14,7 @@ export class RegistrationComponent implements OnInit{
   genders = ['male', 'female']
   registerForm: FormGroup;
   passwordsMatch:boolean;
-  constructor(private _authService: AuthService,private router:Router) { }
+  constructor(private _dialog:MatDialog,private _authService: AuthService,private router:Router) { }
  
  
 
@@ -47,7 +49,7 @@ export class RegistrationComponent implements OnInit{
 
   onSubmit() {
     if (this.registerForm.status == 'INVALID') {
-      alert('გთხოვთ შეავსოთ ყველა საჭირო გრაფა')
+      this._dialog.open(AlertDialogComponent,{data:{content:'გთხოვთ შეავსოთ ყველა საჭირო გრაფა'}})
     } else {
       if(this.registerForm.get('password').value === this.registerForm.get('password1').value) {
         this._authService.registerUser(this.registerForm.value)
@@ -60,13 +62,13 @@ export class RegistrationComponent implements OnInit{
           },
           err => { 
             if(err.error == 'acCode ი არასწორია') {
-              alert('აქტივაციის კოდი არასწორია')
+              this._dialog.open(AlertDialogComponent,{data:{content:'აქტივაციის კოდი არასწორია'}})
             }
           }
         )
       }
       else {
-        alert('პაროლები არ ეთხვევა')
+        this._dialog.open(AlertDialogComponent,{data:{content:'პაროლები არ ეთხვევა'}})
         this.passwordsMatch = false;
       }
     }

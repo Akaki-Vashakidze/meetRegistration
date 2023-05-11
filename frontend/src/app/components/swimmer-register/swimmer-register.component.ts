@@ -1,9 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map, Observable, startWith, Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { ResultsService } from 'src/app/services/results.service';
+import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
 
 @Component({
   selector: 'app-swimmer-register',
@@ -30,7 +32,7 @@ export class SwimmerRegisterComponent implements OnDestroy, OnInit {
   sidenavSubscribe: Subscription;
   ifCardIsFilledSub:Subscription;
   Cards: any = []
-  constructor(private _route: ActivatedRoute, private _router: Router, private _authService: AuthService, private _resultsService: ResultsService, private router: Router) { }
+  constructor(private _dialog:MatDialog,private _route: ActivatedRoute, private _router: Router, private _authService: AuthService, private _resultsService: ResultsService, private router: Router) { }
   opened: boolean;
   newCardSwimmerInfo: object;
   allResults: any;
@@ -165,25 +167,29 @@ export class SwimmerRegisterComponent implements OnDestroy, OnInit {
       cards: this._resultsService.cards,
       compInfo : {poolSize: this.poolSize ,...compInfo}
     }
+    console.log(info)
     this._resultsService.registerSwimmers(info)
       .subscribe(
         res => {
-          alert('რეგისტრაცია დასრულდა წარმატებით')
+          this._dialog.open(AlertDialogComponent,{data:{content:'რეგისტრაცია დასრულდა წარმატებით'}})
           this._router.navigate([''])
         },
         err => {
-          console.log(err)
+          this._dialog.open(AlertDialogComponent,{data:{content:'მოხდა შეცდომა, გთხოვთ გადაამოწმოთ წვდომა ინტერნეტთან და სცადოთ ხელახლა!'}})
+
         }
       )
     } else {
       this._resultsService.errorsOn.next(true)
-      alert('გთხოვთ დაასრულოთ ბარათის შევსება')
+      this._dialog.open(AlertDialogComponent,{data:{content:'გთხოვთ დაასრულოთ ბარათის შევსება'}})
+
     }
   }
 
   onSubmit() {
     if (this.swimmerRegistrationForm.status == 'INVALID') {
-      alert('გთხოვთ შეავსოთ ყველა საჭირო გრაფა')
+      this._dialog.open(AlertDialogComponent,{data:{content:'გთხოვთ შეავსოთ ყველა საჭირო გრაფა'}})
+
     } else {
       if (this.CardIsFilled) {
         let FormValue = this.swimmerRegistrationForm.value
@@ -197,6 +203,7 @@ export class SwimmerRegisterComponent implements OnDestroy, OnInit {
             date: this.compDate
           }
           this.info = { ...FormValue, poolSize: this.poolSize , compInfo: compInfo }
+          this._resultsService.openSidenav(false)
           this._resultsService.getSwimmerCardInfo(this.info)
             .subscribe(
               async res => {
@@ -210,11 +217,12 @@ export class SwimmerRegisterComponent implements OnDestroy, OnInit {
                 this.Cards.push(newCardInfo)
               })
         } else {
-          alert('ასეთი ბარათი უკვე არსებობს')
+          this._dialog.open(AlertDialogComponent,{data:{content:'ასეთი ბარათი უკვე არსებობს'}})
+
         }
       } else {
         this._resultsService.errorsOn.next(true)
-        alert('გთხოვთ დაასრულოთ წინა ბარათის შევსება და შემდეგ დაამატოთ ახალი!')
+        this._dialog.open(AlertDialogComponent,{data:{content:'გთხოვთ დაასრულოთ წინა ბარათის შევსება და შემდეგ დაამატოთ ახალი!'}})
       }
     }
   }
